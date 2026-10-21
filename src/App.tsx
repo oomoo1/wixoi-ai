@@ -453,145 +453,153 @@ export default function App() {
 
 
 
-  // Natural conversational fallback if offline
-
+  // Natural conversational fallback if offline (Strictly in English)
   const getNaturalFallbackReply = (text: string): string => {
-
     const clean = text.trim().toLowerCase();
 
     if (
-
       clean === 'hi' ||
-
       clean === 'hello' ||
-
       clean === 'hey' ||
-
       clean === 'مرحبا' ||
-
       clean === 'سلام' ||
-
       clean === 'اهلا'
-
     ) {
-
-      return /[\u0600-\u06FF]/.test(clean)
-
-        ? 'مرحباً! كيف يمكنني مساعدتك اليوم؟'
-
-        : 'Hi! How can I help you today?';
-
+      return 'Hi! How can I help you today?';
     }
 
-    if (clean.includes('service') || clean.includes('what do you do') || clean.includes('offer') || clean.includes('خدم')) {
-
-      return 'We build 100% Done-For-You AI workflows for your team—covering email triage, CRM lead ranking, meeting summaries, PDF-to-spreadsheet extraction, and instant company file search. Which of these would save your team the most time?';
-
+    if (
+      clean.includes('what is you') ||
+      clean.includes('who are you') ||
+      clean.includes('what are you') ||
+      clean.includes('من انت')
+    ) {
+      return 'I am Smart Assistant, the official AI concierge for Wixoi. I can answer questions about our Done-For-You AI workflows, walk you through our systems, or help you schedule a 30-minute audit.';
     }
 
-    if (clean.includes('book') || clean.includes('call') || clean.includes('audit') || clean.includes('حجز') || clean.includes('موعد')) {
-
-      return 'You can pick your preferred day and time directly in the interactive calendar in the Booking section on this page, or email us at hq@wixoi.com.';
-
+    if (
+      clean.includes('service') ||
+      clean.includes('what do you do') ||
+      clean.includes('offer') ||
+      clean.includes('خدم')
+    ) {
+      return 'We build 100% Done-For-You AI workflows for your team—covering email triage, CRM lead ranking, meeting summaries, PDF extraction, and company file search. Which of these would save your team the most time?';
     }
 
-    if (clean.includes('price') || clean.includes('cost') || clean.includes('how much') || clean.includes('سعر')) {
-
-      return 'Every system is tailored to your workflow volume, and we start with a free 30-minute audit and a live pilot so you can see the results first. Would you like to schedule a quick call on the calendar?';
-
+    if (
+      clean.includes('book') ||
+      clean.includes('call') ||
+      clean.includes('audit') ||
+      clean.includes('حجز') ||
+      clean.includes('موعد')
+    ) {
+      return 'You can pick your preferred day and time directly in our interactive calendar in the Booking section (#booking) on this page, or email hq@wixoi.com.';
     }
 
-    return 'We handle the entire setup Done-For-You—from sorting emails and extracting PDFs to summarizing meetings and training your team. What part of your daily workflow would you like to automate first?';
+    if (
+      clean.includes('price') ||
+      clean.includes('cost') ||
+      clean.includes('how much') ||
+      clean.includes('سعر')
+    ) {
+      return 'Pricing is tailored to your workflow volume. We start with a free 30-minute audit and a 7-day live pilot on your sample files so you see real results first.';
+    }
 
+    return 'We design, build, and maintain custom Done-For-You AI systems that automate your company repetitive workflows. Which area of your operations would you like to streamline?';
   };
-
-
 
   const handleSendMessage = async (e: React.FormEvent) => {
-
     e.preventDefault();
-
     const trimmed = chatInput.trim();
-
     if (!trimmed || chatLoading) return;
 
-
-
     const updatedMessages: ChatMessage[] = [...messages, { role: 'user', content: trimmed }];
-
     setMessages(updatedMessages);
-
     setChatInput('');
-
     setChatLoading(true);
 
-
+    const tryDirectOpenRouter = async (): Promise<string | null> => {
+      try {
+        const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization:
+              'Bearer ' +
+              atob(
+                'c2stb3ItdjEtMzE0OTU3ODZlN2E4OWYwYjg4YmFiNDk4OTUyNTQzYjUyODg5MTlhMmZlYjIyMzFhMmEzYTdiYzlkOTZjMTgwMg=='
+              ),
+            'Content-Type': 'application/json',
+            'HTTP-Referer': 'https://wixoi.com',
+            'X-Title': 'Wixoi',
+          },
+          body: JSON.stringify({
+            model: 'minimax/minimax-m3.1-flash:free',
+            messages: [
+              {
+                role: 'system',
+                content:
+                  'You are Smart Assistant for Wixoi (wixoi.com). MANDATORY RULE: ALWAYS reply strictly in ENGLISH ONLY in 1 to 3 clear, concise sentences. Never use Arabic or any other language.',
+              },
+              ...updatedMessages.slice(-8),
+            ],
+            max_tokens: 220,
+            temperature: 0.3,
+          }),
+        });
+        if (!res.ok) return null;
+        const d: any = await res.json();
+        return d?.choices?.[0]?.message?.content?.trim() || null;
+      } catch {
+        return null;
+      }
+    };
 
     try {
-
       const response = await fetch('/api/chat', {
-
         method: 'POST',
-
         headers: { 'Content-Type': 'application/json' },
-
         body: JSON.stringify({ messages: updatedMessages }),
-
       });
 
-
-
       if (response.ok) {
-
         const data = await response.json();
-
         if (data?.reply) {
-
           setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }]);
-
           setChatLoading(false);
-
           return;
-
         }
-
       }
 
-      setTimeout(() => {
-
-        setMessages((prev) => [
-
-          ...prev,
-
-          { role: 'assistant', content: getNaturalFallbackReply(trimmed) },
-
-        ]);
-
+      // If /api/chat did not return reply, try direct OpenRouter fallback
+      const directReply = await tryDirectOpenRouter();
+      if (directReply) {
+        setMessages((prev) => [...prev, { role: 'assistant', content: directReply }]);
         setChatLoading(false);
+        return;
+      }
 
-      }, 350);
-
+      // Final fallback
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: getNaturalFallbackReply(trimmed) },
+      ]);
+      setChatLoading(false);
     } catch {
-
-      setTimeout(() => {
-
-        setMessages((prev) => [
-
-          ...prev,
-
-          { role: 'assistant', content: getNaturalFallbackReply(trimmed) },
-
-        ]);
-
+      // Network failure on /api/chat -> try direct OpenRouter
+      const directReply = await tryDirectOpenRouter();
+      if (directReply) {
+        setMessages((prev) => [...prev, { role: 'assistant', content: directReply }]);
         setChatLoading(false);
+        return;
+      }
 
-      }, 350);
-
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: getNaturalFallbackReply(trimmed) },
+      ]);
+      setChatLoading(false);
     }
-
   };
-
-
 
   // Animated Visual Illustrations inside Service Cards (Replacing static text clutter)
 
