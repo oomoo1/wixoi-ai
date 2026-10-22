@@ -717,9 +717,9 @@ export default function App() {
 
     const tryDirectOpenRouter = async (): Promise<string | null> => {
       const CANDIDATE_MODELS = [
+        'thinkingmachines/inkling-small:free',
         'dots-studio/dots-3-note-preview:free',
         'nvidia/nemotron-3-ultra-550b-a55b:free',
-        'poolside/laguna-s-2.1:free',
       ];
 
       for (const m of CANDIDATE_MODELS) {

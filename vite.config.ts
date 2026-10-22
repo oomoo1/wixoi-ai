@@ -7,9 +7,9 @@ const FALLBACK_KEY = Buffer.from(
 ).toString('utf-8');
 
 const CANDIDATE_MODELS = [
+  'thinkingmachines/inkling-small:free',
   'dots-studio/dots-3-note-preview:free',
   'nvidia/nemotron-3-ultra-550b-a55b:free',
-  'poolside/laguna-s-2.1:free',
 ];
 
 const SYSTEM_PROMPT = `You are "Smart Assistant", the official AI executive concierge for Wixoi (wixoi.com).
