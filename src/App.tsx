@@ -30,6 +30,8 @@ import {
   ExternalLink,
 
   MessageSquare,
+  RotateCcw,
+  Bot,
 
   Send,
 
@@ -340,11 +342,146 @@ const visualFlows = [
 
 
 interface ChatMessage {
-
+  id: string;
   role: 'assistant' | 'user';
-
   content: string;
+  isStreaming?: boolean;
+}
 
+function FormattedChatMessage({ text }: { text: string }) {
+  // Strip raw asterisks for clean executive rendering
+  const cleaned = text.replace(/\*\*/g, '').replace(/\*/g, '');
+  const lines = cleaned.split('\n');
+
+  const renderLineContent = (lineText: string) => {
+    const parts = lineText.split(/(#booking|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/gi);
+    return parts.map((part, i) => {
+      if (part.toLowerCase() === '#booking') {
+        return (
+          <a
+            key={i}
+            href="#booking"
+            onClick={(e) => {
+              e.preventDefault();
+              const el = document.getElementById('booking');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="inline-flex items-center gap-1 px-2 py-0.5 mx-0.5 rounded-md bg-[#2563EB]/25 border border-[#64CEFB]/40 text-[#64CEFB] hover:text-white hover:bg-[#2563EB]/50 transition-colors font-medium text-[11px] underline cursor-pointer"
+          >
+            🗓️ #booking
+          </a>
+        );
+      }
+      if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(part)) {
+        return (
+          <a
+            key={i}
+            href={`mailto:${part}`}
+            className="text-[#64CEFB] underline hover:text-white font-medium"
+          >
+            {part}
+          </a>
+        );
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
+
+  return (
+    <div className="space-y-1.5 text-xs sm:text-[13px] leading-relaxed select-text">
+      {lines.map((line, idx) => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return <div key={idx} className="h-1" />;
+        }
+
+        const isBullet = trimmed.startsWith('- ') || trimmed.startsWith('• ') || trimmed.startsWith('* ');
+        const bulletText = isBullet ? trimmed.replace(/^[-•*]\s*/, '') : trimmed;
+
+        if (isBullet) {
+          return (
+            <div key={idx} className="flex items-start gap-2 pl-0.5 my-1">
+              <span className="text-[#64CEFB] font-bold select-none text-xs leading-5">⚡</span>
+              <span className="flex-1 leading-relaxed text-white/90">
+                {renderLineContent(bulletText)}
+              </span>
+            </div>
+          );
+        }
+
+        if (
+          trimmed.endsWith(':') ||
+          trimmed.startsWith('⚡') ||
+          trimmed.startsWith('👉') ||
+          trimmed.startsWith('🚀') ||
+          trimmed.startsWith('👋') ||
+          trimmed.startsWith('💼') ||
+          trimmed.startsWith('🗓️')
+        ) {
+          return (
+            <p key={idx} className="font-semibold text-white mt-1.5 mb-1 leading-snug">
+              {renderLineContent(trimmed)}
+            </p>
+          );
+        }
+
+        return (
+          <p key={idx} className="text-white/90 leading-relaxed">
+            {renderLineContent(trimmed)}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
+function TypewriterMessage({
+  content,
+  isTyping,
+  onTypingProgress,
+}: {
+  content: string;
+  isTyping?: boolean;
+  onTypingProgress?: () => void;
+}) {
+  const [displayedChars, setDisplayedChars] = React.useState(isTyping ? 0 : content.length);
+
+  React.useEffect(() => {
+    if (!isTyping) {
+      setDisplayedChars(content.length);
+      return;
+    }
+
+    setDisplayedChars(0);
+    const totalLength = content.length;
+    let current = 0;
+
+    const interval = setInterval(() => {
+      current += totalLength > 180 ? 3 : 2;
+      if (current >= totalLength) {
+        setDisplayedChars(totalLength);
+        clearInterval(interval);
+        if (onTypingProgress) onTypingProgress();
+      } else {
+        setDisplayedChars(current);
+        if (onTypingProgress) onTypingProgress();
+      }
+    }, 12);
+
+    return () => clearInterval(interval);
+  }, [content, isTyping]);
+
+  const visibleText = content.slice(0, displayedChars);
+  const stillStreaming = isTyping && displayedChars < content.length;
+
+  return (
+    <div className="relative">
+      <FormattedChatMessage text={visibleText} />
+      {stillStreaming && (
+        <span className="inline-block w-1.5 h-3.5 bg-[#64CEFB] animate-pulse ml-1 align-middle rounded-full shadow-[0_0_8px_#64CEFB]" />
+      )}
+    </div>
+  );
 }
 
 
@@ -398,16 +535,33 @@ export default function App() {
   const [chatLoading, setChatLoading] = useState<boolean>(false);
 
   const [messages, setMessages] = useState<ChatMessage[]>([
-
     {
-
+      id: 'welcome-1',
       role: 'assistant',
-
-      content: 'Hi! How can I help you today?',
-
+      content:
+        '👋 Hi! I am Smart Assistant, the official AI executive concierge for Wixoi.\n\n⚡ How can I assist your business today:\n• 📩 Automate repetitive inboxes & customer replies\n• 📊 Clean CRM pipelines & rank priority leads\n• 🗓️ Schedule a free 30-minute audit (#booking)',
+      isStreaming: false,
     },
-
   ]);
+
+  const quickPrompts = [
+    '⚡ What can you automate?',
+    '📩 Email & Inbox Triage',
+    '🗓️ Book 30-Min Audit',
+    '💰 Pricing & 7-Day Pilot',
+  ];
+
+  const handleResetChat = () => {
+    setMessages([
+      {
+        id: `welcome-${Date.now()}`,
+        role: 'assistant',
+        content:
+          '👋 Conversation reset. How can I help your company today?\n\n⚡ Pick a topic below or ask any question:\n• 📩 Email Triage & Inbox Automation\n• 📊 CRM Lead Scoring & Pipeline Cleanup\n• 🗓️ Book a free 30-minute audit (#booking)',
+        isStreaming: false,
+      },
+    ]);
+  };
 
 
 
@@ -453,7 +607,7 @@ export default function App() {
 
 
 
-  // Natural conversational fallback if offline (Strictly in English)
+  // Natural conversational fallback if offline (Strictly in English, beautifully formatted)
   const getNaturalFallbackReply = (text: string): string => {
     const clean = text.trim().toLowerCase();
 
@@ -465,7 +619,7 @@ export default function App() {
       clean === 'سلام' ||
       clean === 'اهلا'
     ) {
-      return 'Hi! How can I help you today?';
+      return '👋 Hi! What can I help you with today?';
     }
 
     if (
@@ -474,16 +628,18 @@ export default function App() {
       clean.includes('what are you') ||
       clean.includes('من انت')
     ) {
-      return 'I am Smart Assistant, the official AI concierge for Wixoi. I can answer questions about our Done-For-You AI workflows, walk you through our systems, or help you schedule a 30-minute audit.';
+      return '👋 I am Smart Assistant, the official AI executive concierge for Wixoi!\n\n⚡ Here is what I can do:\n• 🤖 Guide you through our custom Done-For-You AI workflows\n• 📩 Explain email triage, CRM lead ranking, and meeting digests\n• 🗓️ Help you lock in a free 30-minute audit with Mohammed Oumama\n\n💬 What area of your workflow would you like to explore?';
     }
 
     if (
+      clean.includes('how you can help me') ||
+      clean.includes('how can you help') ||
       clean.includes('service') ||
       clean.includes('what do you do') ||
       clean.includes('offer') ||
       clean.includes('خدم')
     ) {
-      return 'We build 100% Done-For-You AI workflows for your team—covering email triage, CRM lead ranking, meeting summaries, PDF extraction, and company file search. Which of these would save your team the most time?';
+      return '⚡ Wixoi builds 100% Done-For-You AI workflows tailored to your business:\n\n• 📩 Email Triage: Sort inboxes and draft context-rich replies automatically.\n• 📊 CRM Lead Ranking: Clean customer data and highlight priority leads.\n• 🗓️ Meeting Digests: Turn call recordings into executive action items.\n• 📑 Document Extraction: Convert PDFs into spreadsheets without manual typing.\n• 🔍 Internal Search: Query company files and get cited answers instantly.\n\n🚀 Ready to get started? You can book a free 30-minute audit in our #booking section, or email us at hq@wixoi.com!';
     }
 
     if (
@@ -493,7 +649,7 @@ export default function App() {
       clean.includes('حجز') ||
       clean.includes('موعد')
     ) {
-      return 'You can pick your preferred day and time directly in our interactive calendar in the Booking section (#booking) on this page, or email hq@wixoi.com.';
+      return '🗓️ Ready to audit your business workflows?\n\n• ⏱️ Duration: 30 minutes with Mohammed Oumama.\n• 🎯 Goal: Map out your 7-day live pilot on sample company files.\n• 🔒 Privacy: 100% governed by a signed Mutual NDA.\n\n👉 Pick your preferred date and time in the #booking section below, or email hq@wixoi.com!';
     }
 
     if (
@@ -502,18 +658,25 @@ export default function App() {
       clean.includes('how much') ||
       clean.includes('سعر')
     ) {
-      return 'Pricing is tailored to your workflow volume. We start with a free 30-minute audit and a 7-day live pilot on your sample files so you see real results first.';
+      return '💼 Pricing is tailored to your workflow scope and team volume:\n\n• 🎁 Free 30-Minute Audit: We review your bottlenecks with zero commitment.\n• ⚡ 7-Day Live Pilot: Test the working system on your files before paying.\n• 🤝 Live Adoption: We train your staff live so adoption is completely effortless.\n\n👉 Schedule your session in our #booking section to discuss a tailored plan!';
     }
 
-    return 'We design, build, and maintain custom Done-For-You AI systems that automate your company repetitive workflows. Which area of your operations would you like to streamline?';
+    return '⚡ Wixoi designs, builds, and maintains custom Done-For-You AI workflows:\n\n• 📩 Inbox & Customer Communication\n• 📊 Lead Management & CRM Pipelines\n• 📑 Invoice & Document Extraction\n\n💬 Which repetitive bottleneck would save your team the most hours each week?';
   };
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmed = chatInput.trim();
+  const handleSendMessage = async (e?: React.FormEvent, directPrompt?: string) => {
+    if (e) e.preventDefault();
+    const query = directPrompt || chatInput;
+    const trimmed = query.trim();
     if (!trimmed || chatLoading) return;
 
-    const updatedMessages: ChatMessage[] = [...messages, { role: 'user', content: trimmed }];
+    const userMsg: ChatMessage = {
+      id: `u-${Date.now()}`,
+      role: 'user',
+      content: trimmed,
+    };
+
+    const updatedMessages: ChatMessage[] = [...messages, userMsg];
     setMessages(updatedMessages);
     setChatInput('');
     setChatLoading(true);
@@ -538,11 +701,11 @@ export default function App() {
               {
                 role: 'system',
                 content:
-                  'You are Smart Assistant for Wixoi (wixoi.com). MANDATORY RULE: ALWAYS reply strictly in ENGLISH ONLY in 1 to 3 clear, concise sentences. Never use Arabic or any other language.',
+                  'You are Smart Assistant for Wixoi (wixoi.com). MANDATORY RULES:\n1. LANGUAGE: ALWAYS respond strictly in ENGLISH ONLY.\n2. NO ASTERISKS: NEVER output raw markdown asterisks (no **bold** or *stars*).\n3. USE EMOJIS: Use expressive emojis (⚡, 📩, 📊, 🗓️, 🚀, ✨, 💼).\n4. BULLETS & DASHES: When listing items or services, use clean bullet dashes (- or •) with a line break for every item.\n5. COLONS & LINE BREAKS: Use clear headers ending in a colon, followed by line breaks.\n6. CONCISE: 2 to 5 structured lines maximum.',
               },
-              ...updatedMessages.slice(-8),
+              ...updatedMessages.map((m) => ({ role: m.role, content: m.content })).slice(-8),
             ],
-            max_tokens: 220,
+            max_tokens: 750,
             temperature: 0.3,
           }),
         });
@@ -558,13 +721,18 @@ export default function App() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: updatedMessages }),
+        body: JSON.stringify({
+          messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
+        }),
       });
 
       if (response.ok) {
         const data = await response.json();
         if (data?.reply) {
-          setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }]);
+          setMessages((prev) => [
+            ...prev,
+            { id: `a-${Date.now()}`, role: 'assistant', content: data.reply, isStreaming: true },
+          ]);
           setChatLoading(false);
           return;
         }
@@ -573,7 +741,10 @@ export default function App() {
       // If /api/chat did not return reply, try direct OpenRouter fallback
       const directReply = await tryDirectOpenRouter();
       if (directReply) {
-        setMessages((prev) => [...prev, { role: 'assistant', content: directReply }]);
+        setMessages((prev) => [
+          ...prev,
+          { id: `a-${Date.now()}`, role: 'assistant', content: directReply, isStreaming: true },
+        ]);
         setChatLoading(false);
         return;
       }
@@ -581,21 +752,33 @@ export default function App() {
       // Final fallback
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: getNaturalFallbackReply(trimmed) },
+        {
+          id: `a-${Date.now()}`,
+          role: 'assistant',
+          content: getNaturalFallbackReply(trimmed),
+          isStreaming: true,
+        },
       ]);
       setChatLoading(false);
     } catch {
-      // Network failure on /api/chat -> try direct OpenRouter
       const directReply = await tryDirectOpenRouter();
       if (directReply) {
-        setMessages((prev) => [...prev, { role: 'assistant', content: directReply }]);
+        setMessages((prev) => [
+          ...prev,
+          { id: `a-${Date.now()}`, role: 'assistant', content: directReply, isStreaming: true },
+        ]);
         setChatLoading(false);
         return;
       }
 
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: getNaturalFallbackReply(trimmed) },
+        {
+          id: `a-${Date.now()}`,
+          role: 'assistant',
+          content: getNaturalFallbackReply(trimmed),
+          isStreaming: true,
+        },
       ]);
       setChatLoading(false);
     }
@@ -2098,183 +2281,166 @@ export default function App() {
 
       {/* =====================================================================
 
-          7. SMART ASSISTANT WIDGET (SINGLE NAME, NO MODEL DISCLOSURE, NATURAL)
-
+          7. SMART ASSISTANT WIDGET (ELEVATED 3D GLASSMORPHIC UI + TYPEWRITER STREAMING)
       ===================================================================== */}
-
       <div className="fixed bottom-5 right-5 z-50">
-
         {!chatOpen ? (
-
           <button
-
             type="button"
-
             onClick={() => setChatOpen(true)}
-
             aria-label="Open Smart Assistant"
-
-            className="group flex items-center gap-3 rounded-full border border-[#64CEFB]/40 bg-[#040B22]/95 hover:bg-[#081538] text-white pl-4 pr-5 py-3 shadow-[0_12px_40px_rgba(37,99,235,0.55)] backdrop-blur-xl transition-all"
-
+            className="group relative flex items-center gap-3 rounded-full border border-[#64CEFB]/40 bg-[#040B22]/95 hover:bg-[#071338] text-white pl-3.5 pr-5 py-2.5 shadow-[0_12px_45px_rgba(37,99,235,0.6)] backdrop-blur-2xl transition-all duration-300 hover:scale-[1.03] hover:border-[#64CEFB]"
           >
-
-            <span className="w-8 h-8 rounded-full bg-[#2563EB] flex items-center justify-center text-white">
-
-              <MessageSquare className="w-4 h-4"/>
-
-            </span>
-
-            <div className="text-left">
-
-              <span className="block text-xs font-bold leading-none">Smart Assistant</span>
-
-              <span className="block text-[10px] text-emerald-400 mt-0.5">● Online</span>
-
-            </div>
-
-          </button>
-
-        ) : (
-
-          <div className="w-[340px] sm:w-[380px] h-[470px] rounded-3xl wixoi-3d-card flex flex-col overflow-hidden shadow-2xl">
-
-            {/* Clean Assistant Header — Only "Smart Assistant", zero model names */}
-
-            <div className="px-5 py-3.5 border-b border-white/10 bg-[#020510]/95 flex items-center justify-between">
-
-              <div className="flex items-center gap-2.5">
-
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-
-                <h4 className="text-xs font-bold text-white">Smart Assistant</h4>
-
+            <div className="relative">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#2563EB] to-[#64CEFB] flex items-center justify-center text-white shadow-[0_0_15px_rgba(100,206,251,0.6)]">
+                <Bot className="w-4 h-4" />
               </div>
-
-              <button
-
-                type="button"
-
-                onClick={() => setChatOpen(false)}
-
-                aria-label="Close Assistant"
-
-                className="p-1.5 rounded-lg text-white/60 hover:text-white"
-
-              >
-
-                <X className="w-4 h-4"/>
-
-              </button>
-
+              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#040B22] animate-pulse" />
             </div>
-
-
+            <div className="text-left">
+              <span className="block text-xs font-bold leading-none tracking-wide text-white flex items-center gap-1.5">
+                <span>Smart Assistant</span>
+                <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-[#2563EB]/30 text-[#64CEFB]">
+                  AI
+                </span>
+              </span>
+              <span className="block text-[10px] text-emerald-400 mt-1 font-medium">● Online • 24/7</span>
+            </div>
+          </button>
+        ) : (
+          <div className="w-[calc(100vw-32px)] sm:w-[410px] h-[550px] sm:h-[590px] max-h-[85vh] rounded-3xl bg-[#030718]/95 backdrop-blur-2xl border border-white/15 shadow-[0_30px_100px_rgba(37,99,235,0.45)] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            {/* Executive Assistant Header */}
+            <div className="px-5 py-3.5 border-b border-white/10 bg-[#020510]/95 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="relative">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#2563EB] to-[#64CEFB] flex items-center justify-center text-white shadow-[0_0_12px_rgba(100,206,251,0.5)]">
+                    <Bot className="w-4 h-4" />
+                  </div>
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#020510] animate-pulse" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-white tracking-wide flex items-center gap-1.5">
+                    <span>Smart Assistant</span>
+                    <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-md bg-[#2563EB]/25 text-[#64CEFB] border border-[#64CEFB]/30">
+                      Wixoi AI
+                    </span>
+                  </h4>
+                  <p className="text-[10px] text-white/50">Real AI • English Only • Zero Wait</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={handleResetChat}
+                  title="Restart conversation"
+                  aria-label="Restart conversation"
+                  className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setChatOpen(false)}
+                  aria-label="Close Assistant"
+                  className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
 
             {/* Messages Area */}
-
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#020510]/80 text-xs">
-
+            <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-[#020510]/80 text-xs">
               {messages.map((m, idx) => (
-
                 <div
-
-                  key={idx}
-
+                  key={m.id || idx}
                   className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
-
                 >
-
                   <div
-
-                    className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 leading-relaxed ${
-
+                    className={`max-w-[88%] rounded-2xl px-4 py-3 leading-relaxed shadow-sm ${
                       m.role === 'user'
-
-                        ? 'bg-[#2563EB] text-white'
-
-                        : 'bg-[#07112B] border border-white/10 text-white/90'
-
+                        ? 'bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] text-white rounded-tr-sm shadow-[0_4px_15px_rgba(37,99,235,0.3)]'
+                        : 'bg-[#060F2B]/90 border border-white/10 text-white/95 rounded-tl-sm shadow-[0_4px_20px_rgba(0,0,0,0.3)]'
                     }`}
-
                   >
-
-                    {m.content}
-
+                    {m.role === 'assistant' ? (
+                      <TypewriterMessage
+                        content={m.content}
+                        isTyping={m.isStreaming}
+                        onTypingProgress={() => {
+                          chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      />
+                    ) : (
+                      <p className="leading-relaxed whitespace-pre-wrap">{m.content}</p>
+                    )}
                   </div>
-
                 </div>
-
               ))}
 
               {chatLoading && (
-
                 <div className="flex justify-start">
-
-                  <div className="rounded-2xl bg-[#07112B] border border-white/10 px-4 py-2.5 text-white/60 text-[11px]">
-
-                    Typing...
-
+                  <div className="rounded-2xl rounded-tl-sm bg-[#060F2B]/90 border border-white/10 px-4 py-3 text-white/70 text-xs flex items-center gap-2 shadow-sm">
+                    <span className="w-2 h-2 rounded-full bg-[#64CEFB] animate-ping" />
+                    <span>Thinking &amp; formatting answer...</span>
                   </div>
-
                 </div>
+              )}
 
+              {/* Quick Suggestion Chips */}
+              {messages.length <= 3 && !chatLoading && (
+                <div className="pt-2 border-t border-white/10">
+                  <span className="text-[10px] font-mono uppercase text-white/40 block mb-2">
+                    Suggested topics:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {quickPrompts.map((qp) => (
+                      <button
+                        key={qp}
+                        type="button"
+                        onClick={() => handleSendMessage(undefined, qp)}
+                        className="rounded-full bg-white/[0.06] hover:bg-[#2563EB]/30 border border-white/15 hover:border-[#64CEFB]/50 px-3 py-1 text-[11px] text-white/80 hover:text-white transition-all text-left"
+                      >
+                        {qp}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               )}
 
               <div ref={chatEndRef} />
-
             </div>
 
-
-
             {/* Input Form */}
-
             <form
-
-              onSubmit={handleSendMessage}
-
-              className="p-3 border-t border-white/10 bg-[#010308] flex items-center gap-2"
-
+              onSubmit={(e) => handleSendMessage(e)}
+              className="p-3 border-t border-white/10 bg-[#010308]/95 flex flex-col gap-1.5"
             >
-
-              <input
-
-                type="text"
-
-                value={chatInput}
-
-                onChange={(e) => setChatInput(e.target.value)}
-
-                placeholder="Write a message..."
-
-                className="flex-1 rounded-xl border border-white/15 bg-[#040B1E] px-3.5 py-2.5 text-xs text-white placeholder:text-white/35 focus:border-[#64CEFB] focus:outline-none"
-
-              />
-
-              <button
-
-                type="submit"
-
-                disabled={chatLoading}
-
-                aria-label="Send message"
-
-                className="w-9 h-9 rounded-xl bg-[#2563EB] hover:bg-[#1d4ed8] text-white flex items-center justify-center shrink-0"
-
-              >
-
-                <Send className="w-3.5 h-3.5"/>
-
-              </button>
-
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Ask about workflows, audit, pricing..."
+                  className="flex-1 rounded-xl border border-white/15 bg-[#040B1E] px-3.5 py-2.5 text-xs text-white placeholder:text-white/35 focus:border-[#64CEFB] focus:outline-none transition-colors"
+                />
+                <button
+                  type="submit"
+                  disabled={chatLoading || !chatInput.trim()}
+                  aria-label="Send message"
+                  className="w-9 h-9 rounded-xl bg-[#2563EB] hover:bg-[#1d4ed8] disabled:opacity-40 disabled:hover:bg-[#2563EB] text-white flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(37,99,235,0.4)] transition-all"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                </button>
+              </div>
+              <div className="flex items-center justify-between text-[10px] text-white/40 px-1">
+                <span>⚡ Real AI • Instant answers</span>
+                <span>English only</span>
+              </div>
             </form>
-
           </div>
-
         )}
-
       </div>
-
-
 
       {/* LEGAL MODALS */}
 
