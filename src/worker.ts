@@ -6,7 +6,12 @@ interface Env {
 const FALLBACK_KEY = atob(
   'c2stb3ItdjEtMzE0OTU3ODZlN2E4OWYwYjg4YmFiNDk4OTUyNTQzYjUyODg5MTlhMmZlYjIyMzFhMmEzYTdiYzlkOTZjMTgwMg=='
 );
-const MODEL_ID = 'minimax/minimax-m3.1-flash:free';
+
+const CANDIDATE_MODELS = [
+  'nvidia/nemotron-3-ultra-550b-a55b:free',
+  'dots-studio/dots-3-note-preview:free',
+  'poolside/laguna-s-2.1:free',
+];
 
 const SYSTEM_PROMPT = `You are "Smart Assistant", the official AI executive concierge for Wixoi (wixoi.com).
 
@@ -52,30 +57,44 @@ export default {
           : [];
         const apiKey = env.OPENROUTER_API_KEY || FALLBACK_KEY;
 
-        const apiRes = await fetch(
-          'https://openrouter.ai/api/v1/chat/completions',
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${apiKey}`,
-              'Content-Type': 'application/json',
-              'HTTP-Referer': 'https://wixoi.com',
-              'X-Title': 'Wixoi',
-            },
-            body: JSON.stringify({
-              model: MODEL_ID,
-              messages: [
-                { role: 'system', content: SYSTEM_PROMPT },
-                ...userMessages,
-              ],
-              max_tokens: 750,
-              temperature: 0.3,
-            }),
-          }
-        );
+        let reply: string | null = null;
 
-        const data: any = await apiRes.json();
-        const reply = data?.choices?.[0]?.message?.content?.trim() || null;
+        for (const model of CANDIDATE_MODELS) {
+          try {
+            const apiRes = await fetch(
+              'https://openrouter.ai/api/v1/chat/completions',
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${apiKey}`,
+                  'Content-Type': 'application/json',
+                  'HTTP-Referer': 'https://wixoi.com',
+                  'X-Title': 'Wixoi',
+                },
+                body: JSON.stringify({
+                  model: model,
+                  messages: [
+                    { role: 'system', content: SYSTEM_PROMPT },
+                    ...userMessages,
+                  ],
+                  max_tokens: 450,
+                  temperature: 0.3,
+                }),
+              }
+            );
+
+            if (apiRes.ok) {
+              const data: any = await apiRes.json();
+              const text = data?.choices?.[0]?.message?.content?.trim();
+              if (text) {
+                reply = text;
+                break;
+              }
+            }
+          } catch {
+            // Try next candidate model
+          }
+        }
 
         return new Response(JSON.stringify({ reply }), {
           status: 200,

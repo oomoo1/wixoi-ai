@@ -619,7 +619,7 @@ export default function App() {
       clean === 'سلام' ||
       clean === 'اهلا'
     ) {
-      return '👋 Hi! What can I help you with today?';
+      return '👋 Hi! How can I assist your business today?';
     }
 
     if (
@@ -628,18 +628,61 @@ export default function App() {
       clean.includes('what are you') ||
       clean.includes('من انت')
     ) {
-      return '👋 I am Smart Assistant, the official AI executive concierge for Wixoi!\n\n⚡ Here is what I can do:\n• 🤖 Guide you through our custom Done-For-You AI workflows\n• 📩 Explain email triage, CRM lead ranking, and meeting digests\n• 🗓️ Help you lock in a free 30-minute audit with Mohammed Oumama\n\n💬 What area of your workflow would you like to explore?';
+      return '👋 I am Smart Assistant, the official AI executive concierge for Wixoi!\n\n⚡ Here is what I can do:\n• 🤖 Guide you through custom Done-For-You AI workflows for your company\n• 📩 Explain email triage, CRM lead scoring, meeting digests, and document extraction\n• 🗓️ Help you lock in a free 30-minute audit with Mohammed Oumama\n\n💬 What part of your operations would you like to streamline?';
     }
 
     if (
-      clean.includes('how you can help me') ||
-      clean.includes('how can you help') ||
-      clean.includes('service') ||
-      clean.includes('what do you do') ||
-      clean.includes('offer') ||
-      clean.includes('خدم')
+      clean.includes('email') ||
+      clean.includes('inbox') ||
+      clean.includes('triage') ||
+      clean.includes('بريد')
     ) {
-      return '⚡ Wixoi builds 100% Done-For-You AI workflows tailored to your business:\n\n• 📩 Email Triage: Sort inboxes and draft context-rich replies automatically.\n• 📊 CRM Lead Ranking: Clean customer data and highlight priority leads.\n• 🗓️ Meeting Digests: Turn call recordings into executive action items.\n• 📑 Document Extraction: Convert PDFs into spreadsheets without manual typing.\n• 🔍 Internal Search: Query company files and get cited answers instantly.\n\n🚀 Ready to get started? You can book a free 30-minute audit in our #booking section, or email us at hq@wixoi.com!';
+      return '⚡ Email & Inbox Triage — Done-For-You Workflow:\n\n• 📥 Auto-Classification: Every incoming email is instantly categorized by priority and intent.\n• ✍️ Ready-to-Send Drafts: AI crafts context-aware response drafts tailored to your business voice.\n• 🏷️ Zero Clutter: Urgent threads get flagged, newsletters and spam get archived automatically.\n• ⏱️ Hours Saved: Reduces your team email burden by 80% daily.\n\n🗓️ Ready to test it on your actual inbox? Book a free 30-min audit in our #booking section, or email hq@wixoi.com!';
+    }
+
+    if (
+      clean.includes('crm') ||
+      clean.includes('lead') ||
+      clean.includes('pipeline') ||
+      clean.includes('عملاء')
+    ) {
+      return '📊 CRM Cleanup & Lead Scoring — Done-For-You Workflow:\n\n• 🧹 Database Sanitization: Deduplicates contacts and fills missing company data automatically.\n• 🎯 Priority Lead Ranking: Scores incoming leads based on deal size and urgency so reps call the best prospects first.\n• 🔄 Automatic Sync: Integrates seamlessly into HubSpot, Salesforce, or Pipedrive.\n\n🗓️ Want to see your top leads scored live? Schedule your free 30-min session at #booking or email hq@wixoi.com!';
+    }
+
+    if (
+      clean.includes('meeting') ||
+      clean.includes('summar') ||
+      clean.includes('record') ||
+      clean.includes('اجتماع')
+    ) {
+      return '🗓️ Meeting Summaries & Action Items — Done-For-You Workflow:\n\n• 🎙️ Automatic Ingestion: Connects to Zoom, Google Meet, or Microsoft Teams recordings.\n• 📋 Executive Digests: Generates crisp 1-page summaries with key decisions, assigned owners, and deadlines.\n• 🚀 Project Tool Sync: Pushes tasks directly into Asana, ClickUp, Notion, or Slack.\n\n⚡ Never take manual meeting notes again. Lock in a free 30-minute audit at #booking or email hq@wixoi.com!';
+    }
+
+    if (
+      clean.includes('pdf') ||
+      clean.includes('invoice') ||
+      clean.includes('extract') ||
+      clean.includes('فواتير')
+    ) {
+      return '📑 PDF & Document Extraction — Done-For-You Workflow:\n\n• 📄 100% Extraction Accuracy: Converts messy PDFs, scanned receipts, and invoices into structured spreadsheets.\n• 📊 Zero Manual Entry: Eliminates repetitive typing into Excel or Google Sheets.\n• 🛡️ Strict Quality Control: Flags discrepancies for human sign-off before committing records.\n\n🗓️ Test it on your actual sample files during a free 30-min audit at #booking or email hq@wixoi.com!';
+    }
+
+    if (
+      clean.includes('search') ||
+      clean.includes('knowledge') ||
+      clean.includes('file') ||
+      clean.includes('بحث')
+    ) {
+      return '🔍 Internal Company Knowledge Search — Done-For-You Workflow:\n\n• 📁 Unified Intelligence: Connects your Google Drive, SharePoint, Notion, and internal SOPs.\n• ⚡ Instant Cited Answers: Employees ask questions and get accurate answers with direct links to the source files.\n• 🔒 Private & Secure: Your files remain completely private and are never used to train public models.\n\n👉 See it live on your company docs. Schedule a 30-min review at #booking or email hq@wixoi.com!';
+    }
+
+    if (
+      clean.includes('price') ||
+      clean.includes('cost') ||
+      clean.includes('how much') ||
+      clean.includes('سعر')
+    ) {
+      return '💼 Transparent Done-For-You Pricing:\n\n• 🎁 Free 30-Minute Audit: We map out your biggest bottleneck and calculate your exact ROI.\n• ⚡ 7-Day Live Pilot: You test the working system on your files before making any long-term commitment.\n• 🤝 Live Staff Training: We train your team on screen-share so adoption is 100% effortless.\n\n👉 Pick a time directly in our #booking section to get a tailored scope and pricing estimate!';
     }
 
     if (
@@ -649,19 +692,10 @@ export default function App() {
       clean.includes('حجز') ||
       clean.includes('موعد')
     ) {
-      return '🗓️ Ready to audit your business workflows?\n\n• ⏱️ Duration: 30 minutes with Mohammed Oumama.\n• 🎯 Goal: Map out your 7-day live pilot on sample company files.\n• 🔒 Privacy: 100% governed by a signed Mutual NDA.\n\n👉 Pick your preferred date and time in the #booking section below, or email hq@wixoi.com!';
+      return '🗓️ Book Your Executive Workflow Audit:\n\n• ⏱️ Duration: 30 minutes with Mohammed Oumama.\n• 🎯 Output: A concrete 7-day Done-For-You pilot plan customized for your business.\n• 🔒 Privacy: 100% governed by a signed Mutual NDA.\n\n👉 Select your slot right now in the #booking section on this page, or email hq@wixoi.com!';
     }
 
-    if (
-      clean.includes('price') ||
-      clean.includes('cost') ||
-      clean.includes('how much') ||
-      clean.includes('سعر')
-    ) {
-      return '💼 Pricing is tailored to your workflow scope and team volume:\n\n• 🎁 Free 30-Minute Audit: We review your bottlenecks with zero commitment.\n• ⚡ 7-Day Live Pilot: Test the working system on your files before paying.\n• 🤝 Live Adoption: We train your staff live so adoption is completely effortless.\n\n👉 Schedule your session in our #booking section to discuss a tailored plan!';
-    }
-
-    return '⚡ Wixoi designs, builds, and maintains custom Done-For-You AI workflows:\n\n• 📩 Inbox & Customer Communication\n• 📊 Lead Management & CRM Pipelines\n• 📑 Invoice & Document Extraction\n\n💬 Which repetitive bottleneck would save your team the most hours each week?';
+    return '⚡ Wixoi designs, builds, and runs 100% Done-For-You AI workflows:\n\n• 📩 Email Triage & Customer Response\n• 📊 CRM Lead Scoring & Pipeline Organization\n• 🗓️ Meeting Summaries & Action Items\n• 📑 PDF & Invoice Data Extraction\n\n💬 Which of these areas would you like to automate first?';
   };
 
   const handleSendMessage = async (e?: React.FormEvent, directPrompt?: string) => {
@@ -682,39 +716,50 @@ export default function App() {
     setChatLoading(true);
 
     const tryDirectOpenRouter = async (): Promise<string | null> => {
-      try {
-        const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            Authorization:
-              'Bearer ' +
-              atob(
-                'c2stb3ItdjEtMzE0OTU3ODZlN2E4OWYwYjg4YmFiNDk4OTUyNTQzYjUyODg5MTlhMmZlYjIyMzFhMmEzYTdiYzlkOTZjMTgwMg=='
-              ),
-            'Content-Type': 'application/json',
-            'HTTP-Referer': 'https://wixoi.com',
-            'X-Title': 'Wixoi',
-          },
-          body: JSON.stringify({
-            model: 'minimax/minimax-m3.1-flash:free',
-            messages: [
-              {
-                role: 'system',
-                content:
-                  'You are Smart Assistant for Wixoi (wixoi.com). MANDATORY RULES:\n1. LANGUAGE: ALWAYS respond strictly in ENGLISH ONLY.\n2. NO ASTERISKS: NEVER output raw markdown asterisks (no **bold** or *stars*).\n3. USE EMOJIS: Use expressive emojis (⚡, 📩, 📊, 🗓️, 🚀, ✨, 💼).\n4. BULLETS & DASHES: When listing items or services, use clean bullet dashes (- or •) with a line break for every item.\n5. COLONS & LINE BREAKS: Use clear headers ending in a colon, followed by line breaks.\n6. CONCISE: 2 to 5 structured lines maximum.',
-              },
-              ...updatedMessages.map((m) => ({ role: m.role, content: m.content })).slice(-8),
-            ],
-            max_tokens: 750,
-            temperature: 0.3,
-          }),
-        });
-        if (!res.ok) return null;
-        const d: any = await res.json();
-        return d?.choices?.[0]?.message?.content?.trim() || null;
-      } catch {
-        return null;
+      const CANDIDATE_MODELS = [
+        'nvidia/nemotron-3-ultra-550b-a55b:free',
+        'dots-studio/dots-3-note-preview:free',
+        'poolside/laguna-s-2.1:free',
+      ];
+
+      for (const m of CANDIDATE_MODELS) {
+        try {
+          const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              Authorization:
+                'Bearer ' +
+                atob(
+                  'c2stb3ItdjEtMzE0OTU3ODZlN2E4OWYwYjg4YmFiNDk4OTUyNTQzYjUyODg5MTlhMmZlYjIyMzFhMmEzYTdiYzlkOTZjMTgwMg=='
+                ),
+              'Content-Type': 'application/json',
+              'HTTP-Referer': 'https://wixoi.com',
+              'X-Title': 'Wixoi',
+            },
+            body: JSON.stringify({
+              model: m,
+              messages: [
+                {
+                  role: 'system',
+                  content:
+                    'You are Smart Assistant for Wixoi (wixoi.com). MANDATORY RULES:\n1. LANGUAGE: ALWAYS respond strictly in ENGLISH ONLY.\n2. NO ASTERISKS: NEVER output raw markdown asterisks (no **bold** or *stars*).\n3. USE EMOJIS: Use expressive emojis (⚡, 📩, 📊, 🗓️, 🚀, ✨, 💼).\n4. BULLETS & DASHES: When listing items or services, use clean bullet dashes (- or •) with a line break for every item.\n5. COLONS & LINE BREAKS: Use clear headers ending in a colon, followed by line breaks.\n6. CONCISE: 2 to 5 structured lines maximum.',
+                },
+                ...updatedMessages.map((msg) => ({ role: msg.role, content: msg.content })).slice(-8),
+              ],
+              max_tokens: 450,
+              temperature: 0.3,
+            }),
+          });
+          if (res.ok) {
+            const d: any = await res.json();
+            const text = d?.choices?.[0]?.message?.content?.trim();
+            if (text) return text;
+          }
+        } catch {
+          // try next model
+        }
       }
+      return null;
     };
 
     try {
