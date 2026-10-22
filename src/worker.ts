@@ -8,8 +8,8 @@ const FALLBACK_KEY = atob(
 );
 
 const CANDIDATE_MODELS = [
-  'nvidia/nemotron-3-ultra-550b-a55b:free',
   'dots-studio/dots-3-note-preview:free',
+  'nvidia/nemotron-3-ultra-550b-a55b:free',
   'poolside/laguna-s-2.1:free',
 ];
 
