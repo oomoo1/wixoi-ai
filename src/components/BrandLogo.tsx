@@ -46,11 +46,11 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md' }) => {
         </svg>
       </div>
 
-      {/* Pure Brand Name: Wixoi */}
+      {/* Pure Brand Name: Wixoi AI */}
       <span
         className={`font-display font-bold tracking-tight text-white ${textSize} leading-none`}
       >
-        Wixoi
+        Wixoi AI
       </span>
     </div>
   );

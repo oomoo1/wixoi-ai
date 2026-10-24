@@ -66,277 +66,126 @@ const VIDEO_URL =
 
 
 const navLinks = [
-
-  { label: 'Done-For-You', href: '#offer' },
-
-  { label: 'Systems', href: '#services' },
-
+  { label: 'Our Approach', href: '#offer' },
+  { label: 'Services', href: '#services' },
   { label: 'Live Flow', href: '#flow' },
-
   { label: 'ROI Model', href: '#estimate' },
-
   { label: 'Book Call', href: '#booking' },
-
 ];
 
-
-
-// Alex Hormozi Value Equation Pillars: High Dream Outcome, High Certainty, Low Time Delay, Zero Effort
-
+// Value Equation Pillars: High Dream Outcome, High Certainty, Low Time Delay, Zero Effort
 const hormoziPillars = [
-
   {
-
     badge: 'ZERO EFFORT FROM YOU',
-
-    title: '100% Done-For-You Build',
-
+    title: 'Complete Setup & Integration',
     description:
-
       'You never touch a line of code or learn a complicated tool. We design, connect, test, and hand you a working system inside the apps your team already uses.',
-
   },
-
   {
-
     badge: 'FAST TIME TO VALUE',
-
     title: 'Live in 7 Days, Not Months',
-
     description:
-
       'Instead of 6-month consulting projects, we deploy your first working workflow on a real sample of your business files within one week.',
-
   },
-
   {
-
     badge: 'ZERO-RISK GUARANTEE',
-
     title: 'Judge the Real Output First',
-
     description:
-
-      'You see the system sorting your emails, summarizing your meetings, or extracting your PDFs in a live pilot before making any long-term commitment.',
-
+      'You see the system summarizing your meetings, ranking your CRM leads, or extracting your PDFs in a live pilot before making any long-term commitment.',
   },
-
   {
-
     badge: 'FULL TEAM ADOPTION',
-
     title: 'We Train Your Staff Live',
-
     description:
-
       'A great system is useless if your team ignores it. We train your staff live on screen-share and maintain the workflow every month for you.',
-
   },
-
 ];
 
 
 
-// Clean, Visual, Animated Service Cards (No technical jargon or ugly code blocks)
-
-const visualServices = [
-
+// Clean, Visual, Animated Service Cards (4 Active Services We Deliver)
+const activeServices = [
   {
-
-    id: 'email',
-
-    icon: Mail,
-
-    title: 'Inbox Triage & Ready Replies',
-
-    outcome: 'Every email sorted & drafted automatically',
-
-    simpleCopy:
-
-      'We organize your incoming emails by priority and place ready-to-send reply drafts inside your inbox—your team simply clicks approve.',
-
-    visual: 'email',
-
-  },
-
-  {
-
     id: 'crm',
-
     icon: Users,
-
     title: 'CRM Cleanup & Priority Leads',
-
-    outcome: 'Know exactly who to call every morning',
-
+    outcome: 'Available now',
     simpleCopy:
-
-      'We clean messy contact lists, review past notes, and give your sales team a ranked daily call list with a tailored opening line.',
-
+      'We clean messy contact lists, review past notes, and give your sales team a ranked call list with tailored opening lines.',
     visual: 'crm',
-
   },
-
   {
-
     id: 'meetings',
-
     icon: FileText,
-
     title: 'Meeting Summaries & Action Plans',
-
-    outcome: 'Every call turned into clear tasks & owners',
-
+    outcome: 'Available now',
     simpleCopy:
-
-      'Send us your meeting recordings and receive a clean summary, assigned tasks for each team member, and a Friday leadership digest.',
-
+      'Send meeting recordings and receive an executive summary, main discussion topics, and assigned tasks with owners in Google Docs.',
     visual: 'meetings',
-
   },
-
   {
-
     id: 'pdf',
-
     icon: FileSpreadsheet,
-
-    title: 'PDFs & Invoices to Clean Tables',
-
-    outcome: 'Zero manual copy-pasting from documents',
-
+    title: 'PDFs & Invoices to Clean Sheets',
+    outcome: 'Available now',
     simpleCopy:
-
-      'Invoices, contracts, and forms are turned automatically into clean Google Sheets rows with 100% accuracy and zero guesswork.',
-
+      'Invoices, contracts, and receipts are converted into clean Google Sheets rows. Missing fields stay empty and doubtful items are flagged for human check.',
     visual: 'pdf',
-
   },
-
   {
-
-    id: 'knowledge',
-
-    icon: Search,
-
-    title: 'Instant Company Knowledge Search',
-
-    outcome: 'Instant answers from your own files',
-
-    simpleCopy:
-
-      'Your team asks any question in plain English and gets an immediate, accurate answer pointing to the exact page in your company documents.',
-
-    visual: 'knowledge',
-
-  },
-
-  {
-
     id: 'reports',
-
     icon: Award,
-
     title: 'Automated Quotes & Weekly Reports',
-
-    outcome: 'Full visibility on hours saved every week',
-
+    outcome: 'Available now',
     simpleCopy:
-
-      'We automate price quotes, client follow-ups, and deliver a simple Friday executive report showing the exact hours saved across your team.',
-
+      'Automate client price quotes and follow-ups, and receive a weekly executive summary report tracking operations.',
     visual: 'reports',
-
   },
-
 ];
 
 
-
-// Simple Visual Flow Steps (Replaces the ugly technical JSON box from Image 3)
-
+// Simple Visual Flow Steps
 const visualFlows = [
-
   {
-
-    id: 'email',
-
-    label: 'Email Automation',
-
-    beforeTitle: 'Before Wixoi',
-
-    beforeDesc: 'Hours lost every morning reading hundreds of mixed emails and typing repetitive replies.',
-
-    wixoiAction: 'Wixoi labels every email & writes the reply draft in 3 seconds',
-
-    afterTitle: 'Your Result',
-
-    afterDesc: 'A clean, organized inbox where your team reviews and sends replies in minutes.',
-
-    highlight: '100% Done-For-You inside Gmail & Outlook',
-
-  },
-
-  {
-
-    id: 'pdf',
-
-    label: 'Document Extraction',
-
-    beforeTitle: 'Before Wixoi',
-
-    beforeDesc: 'Staff manually opening PDF invoices and contracts to type numbers into spreadsheets.',
-
-    wixoiAction: 'Wixoi reads every PDF and fills your spreadsheet automatically',
-
-    afterTitle: 'Your Result',
-
-    afterDesc: 'Every invoice and contract appears as a clean, verified row in Google Sheets.',
-
-    highlight: 'Zero manual data entry • Zero guessed numbers',
-
-  },
-
-  {
-
-    id: 'meetings',
-
-    label: 'Meeting Intelligence',
-
-    beforeTitle: 'Before Wixoi',
-
-    beforeDesc: 'Long meetings end with forgotten tasks and nobody sure who owns the next step.',
-
-    wixoiAction: 'Wixoi turns the recording into a summary + owner task list',
-
-    afterTitle: 'Your Result',
-
-    afterDesc: 'Every participant gets their clear action items, plus a weekly executive summary.',
-
-    highlight: 'Delivered straight to Google Docs & Email',
-
-  },
-
-  {
-
     id: 'crm',
-
-    label: 'Sales Prioritization',
-
-    beforeTitle: 'Before Wixoi',
-
-    beforeDesc: 'Valuable leads sit forgotten inside a messy CRM with outdated notes.',
-
-    wixoiAction: 'Wixoi cleans your CRM & ranks the hottest leads to call today',
-
+    label: 'CRM & Lead Ranking',
+    beforeTitle: 'Before Wixoi AI',
+    beforeDesc: 'Valuable contacts sit unranked inside a messy CRM or export without priority.',
+    wixoiAction: 'Wixoi AI reviews contacts and ranks who to call this week with opening lines',
     afterTitle: 'Your Result',
-
-    afterDesc: 'Your sales team starts every week with a ranked call list and ready opening hooks.',
-
-    highlight: 'More booked deals from contacts you already own',
-
+    afterDesc: 'Your sales team starts every week with a prioritized call list and ready opening hooks.',
+    highlight: 'Prioritized contacts & suggested opening lines',
   },
-
+  {
+    id: 'meetings',
+    label: 'Meeting Summaries',
+    beforeTitle: 'Before Wixoi AI',
+    beforeDesc: 'Long meetings end with forgotten tasks and nobody sure who owns the next step.',
+    wixoiAction: 'Wixoi AI turns the recording into a summary + owner task list',
+    afterTitle: 'Your Result',
+    afterDesc: 'Every participant gets their clear action items delivered straight to Google Docs.',
+    highlight: 'Delivered straight to Google Docs',
+  },
+  {
+    id: 'pdf',
+    label: 'Document Extraction',
+    beforeTitle: 'Before Wixoi AI',
+    beforeDesc: 'Staff manually opening PDF invoices and contracts to type numbers into spreadsheets.',
+    wixoiAction: 'Wixoi AI reads every PDF and fills your spreadsheet automatically',
+    afterTitle: 'Your Result',
+    afterDesc: 'Every invoice and contract appears as a clean, verified row in Google Sheets.',
+    highlight: 'Zero manual data entry • Zero guessed numbers',
+  },
+  {
+    id: 'reports',
+    label: 'Quotes & Weekly Reports',
+    beforeTitle: 'Before Wixoi AI',
+    beforeDesc: 'Drafting quotes manually and losing visibility on weekly operations and capacity.',
+    wixoiAction: 'Wixoi AI automates quote generation & compiles a concise weekly executive report',
+    afterTitle: 'Your Result',
+    afterDesc: 'Fast client quote replies and a clean weekly executive report delivered automatically.',
+    highlight: 'Automated quotes & executive visibility',
+  },
 ];
 
 
@@ -492,7 +341,7 @@ export default function App() {
 
   const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | 'security' | null>(null);
 
-  const [activeFlow, setActiveFlow] = useState<string>('email');
+  const [activeFlow, setActiveFlow] = useState<string>('crm');
 
 
 
@@ -539,16 +388,16 @@ export default function App() {
       id: 'welcome-1',
       role: 'assistant',
       content:
-        '👋 Hi! I am Smart Assistant, the official AI executive concierge for Wixoi.\n\n⚡ How can I assist your business today:\n• 📩 Automate repetitive inboxes & customer replies\n• 📊 Clean CRM pipelines & rank priority leads\n• 🗓️ Schedule a free 30-minute audit (#booking)',
+        '👋 Hi! I am the AI assistant for Wixoi AI (not a person).\n\n⚡ Here are the 4 workflows we build and run:\n• 📊 CRM cleanup & priority lead ranking\n• 🗓️ Meeting summaries & action plans in Google Docs\n• 📑 PDFs & invoices to clean Google Sheets rows\n• 📈 Automated quotes & weekly executive reports\n\n🗓️ How can I assist your business today?',
       isStreaming: false,
     },
   ]);
 
   const quickPrompts = [
-    '⚡ What can you automate?',
-    '📩 Email & Inbox Triage',
-    '🗓️ Book 30-Min Audit',
-    '💰 Pricing & 7-Day Pilot',
+    '📊 CRM & Lead Ranking',
+    '🗓️ Meeting Summaries',
+    '📑 PDFs to Google Sheets',
+    '📈 Quotes & Weekly Reports',
   ];
 
   const handleResetChat = () => {
@@ -557,7 +406,7 @@ export default function App() {
         id: `welcome-${Date.now()}`,
         role: 'assistant',
         content:
-          '👋 Conversation reset. How can I help your company today?\n\n⚡ Pick a topic below or ask any question:\n• 📩 Email Triage & Inbox Automation\n• 📊 CRM Lead Scoring & Pipeline Cleanup\n• 🗓️ Book a free 30-minute audit (#booking)',
+          '👋 Conversation reset. I am an AI assistant for Wixoi AI.\n\n⚡ Pick a topic below or ask any question:\n• 📊 CRM cleanup & lead ranking\n• 🗓️ Meeting summaries & action plans\n• 📑 PDFs & invoices to Google Sheets\n• 📈 Automated quotes & weekly reports\n\n🗓️ You can also schedule a free review at #booking.',
         isStreaming: false,
       },
     ]);
@@ -619,7 +468,7 @@ export default function App() {
       clean === 'سلام' ||
       clean === 'اهلا'
     ) {
-      return '👋 Hi! How can I assist your business today?';
+      return '👋 Hi! I am an AI assistant for Wixoi AI. How can I assist your business today?';
     }
 
     if (
@@ -628,25 +477,17 @@ export default function App() {
       clean.includes('what are you') ||
       clean.includes('من انت')
     ) {
-      return '👋 I am Smart Assistant, the official AI executive concierge for Wixoi!\n\n⚡ Here is what I can do:\n• 🤖 Guide you through custom Done-For-You AI workflows for your company\n• 📩 Explain email triage, CRM lead scoring, meeting digests, and document extraction\n• 🗓️ Help you lock in a free 30-minute audit with Mohammed Oumama\n\n💬 What part of your operations would you like to streamline?';
-    }
-
-    if (
-      clean.includes('email') ||
-      clean.includes('inbox') ||
-      clean.includes('triage') ||
-      clean.includes('بريد')
-    ) {
-      return '⚡ Email & Inbox Triage — Done-For-You Workflow:\n\n• 📥 Auto-Classification: Every incoming email is instantly categorized by priority and intent.\n• ✍️ Ready-to-Send Drafts: AI crafts context-aware response drafts tailored to your business voice.\n• 🏷️ Zero Clutter: Urgent threads get flagged, newsletters and spam get archived automatically.\n• ⏱️ Hours Saved: Reduces your team email burden by 80% daily.\n\n🗓️ Ready to test it on your actual inbox? Book a free 30-min audit in our #booking section, or email hq@wixoi.com!';
+      return '👋 I am an AI assistant for Wixoi AI (not a person).\n\n⚡ Here are the 4 workflows we build and run:\n• 📊 CRM cleanup & priority lead ranking\n• 🗓️ Meeting summaries & action plans in Google Docs\n• 📑 PDFs & invoices to clean Google Sheets rows\n• 📈 Automated quotes & weekly executive reports\n\n🗓️ Book a free workflow review at #booking or email hq@wixoi.com.';
     }
 
     if (
       clean.includes('crm') ||
       clean.includes('lead') ||
       clean.includes('pipeline') ||
+      clean.includes('ranking') ||
       clean.includes('عملاء')
     ) {
-      return '📊 CRM Cleanup & Lead Scoring — Done-For-You Workflow:\n\n• 🧹 Database Sanitization: Deduplicates contacts and fills missing company data automatically.\n• 🎯 Priority Lead Ranking: Scores incoming leads based on deal size and urgency so reps call the best prospects first.\n• 🔄 Automatic Sync: Integrates seamlessly into HubSpot, Salesforce, or Pipedrive.\n\n🗓️ Want to see your top leads scored live? Schedule your free 30-min session at #booking or email hq@wixoi.com!';
+      return '📊 CRM Cleanup & Lead Ranking (Available Now):\n\n• Clean messy contact lists and fill missing details.\n• Rank contacts worth a call this week with suggested opening lines.\n• Helps your sales team prioritize who to call first.\n\n🗓️ Book a free workflow review at #booking or email hq@wixoi.com!';
     }
 
     if (
@@ -655,47 +496,67 @@ export default function App() {
       clean.includes('record') ||
       clean.includes('اجتماع')
     ) {
-      return '🗓️ Meeting Summaries & Action Items — Done-For-You Workflow:\n\n• 🎙️ Automatic Ingestion: Connects to Zoom, Google Meet, or Microsoft Teams recordings.\n• 📋 Executive Digests: Generates crisp 1-page summaries with key decisions, assigned owners, and deadlines.\n• 🚀 Project Tool Sync: Pushes tasks directly into Asana, ClickUp, Notion, or Slack.\n\n⚡ Never take manual meeting notes again. Lock in a free 30-minute audit at #booking or email hq@wixoi.com!';
+      return '🗓️ Meeting Summaries & Action Plans (Available Now):\n\n• Call recordings become a transcript and concise executive summary.\n• Extracts discussion topics and action items with owners.\n• Delivered directly as a Google Doc.\n\n🗓️ Book a free workflow review at #booking or email hq@wixoi.com!';
     }
 
     if (
       clean.includes('pdf') ||
       clean.includes('invoice') ||
+      clean.includes('contract') ||
       clean.includes('extract') ||
       clean.includes('فواتير')
     ) {
-      return '📑 PDF & Document Extraction — Done-For-You Workflow:\n\n• 📄 100% Extraction Accuracy: Converts messy PDFs, scanned receipts, and invoices into structured spreadsheets.\n• 📊 Zero Manual Entry: Eliminates repetitive typing into Excel or Google Sheets.\n• 🛡️ Strict Quality Control: Flags discrepancies for human sign-off before committing records.\n\n🗓️ Test it on your actual sample files during a free 30-min audit at #booking or email hq@wixoi.com!';
+      return '📑 PDFs & Invoices to Clean Sheets (Available Now):\n\n• Invoices, contracts, and forms become clean rows in a Google Sheet.\n• Missing fields stay empty, never guessed.\n• Anything doubtful is flagged for human check.\n\n🗓️ Book a free workflow review at #booking or email hq@wixoi.com!';
     }
 
     if (
+      clean.includes('quote') ||
+      clean.includes('report') ||
+      clean.includes('weekly') ||
+      clean.includes('تقرير') ||
+      clean.includes('اسعار')
+    ) {
+      return '📈 Automated Quotes & Weekly Reports (Available Now):\n\n• Automate client price quotes and follow-up templates.\n• Receive a clean weekly executive report tracking operations.\n• Keeps leadership aligned on team capacity.\n\n🗓️ Book a free workflow review at #booking or email hq@wixoi.com!';
+    }
+
+    if (
+      clean.includes('email') ||
+      clean.includes('inbox') ||
+      clean.includes('triage') ||
+      clean.includes('draft') ||
       clean.includes('search') ||
       clean.includes('knowledge') ||
-      clean.includes('file') ||
+      clean.includes('slack') ||
+      clean.includes('teams') ||
+      clean.includes('بريد') ||
       clean.includes('بحث')
     ) {
-      return '🔍 Internal Company Knowledge Search — Done-For-You Workflow:\n\n• 📁 Unified Intelligence: Connects your Google Drive, SharePoint, Notion, and internal SOPs.\n• ⚡ Instant Cited Answers: Employees ask questions and get accurate answers with direct links to the source files.\n• 🔒 Private & Secure: Your files remain completely private and are never used to train public models.\n\n👉 See it live on your company docs. Schedule a 30-min review at #booking or email hq@wixoi.com!';
+      return '⚡ We specialize strictly in 4 reliable AI workflows:\n\n• 📊 CRM Cleanup & Lead Ranking\n• 🗓️ Meeting Summaries & Action Plans\n• 📑 PDFs & Invoices to Clean Sheets\n• 📈 Automated Quotes & Weekly Reports\n\n💬 We do not offer email sorting or file search workflows. Book a review at #booking or email hq@wixoi.com!';
     }
 
     if (
       clean.includes('price') ||
       clean.includes('cost') ||
       clean.includes('how much') ||
+      clean.includes('guarantee') ||
+      clean.includes('legal') ||
       clean.includes('سعر')
     ) {
-      return '💼 Transparent Done-For-You Pricing:\n\n• 🎁 Free 30-Minute Audit: We map out your biggest bottleneck and calculate your exact ROI.\n• ⚡ 7-Day Live Pilot: You test the working system on your files before making any long-term commitment.\n• 🤝 Live Staff Training: We train your team on screen-share so adoption is 100% effortless.\n\n👉 Pick a time directly in our #booking section to get a tailored scope and pricing estimate!';
+      return '💼 Pricing & Guarantees:\n\n• As an AI assistant, I cannot answer questions about pricing, specific results, security guarantees, or legal matters.\n• Please schedule a free workflow review at #booking or email hq@wixoi.com.';
     }
 
     if (
       clean.includes('book') ||
       clean.includes('call') ||
       clean.includes('audit') ||
+      clean.includes('review') ||
       clean.includes('حجز') ||
       clean.includes('موعد')
     ) {
-      return '🗓️ Book Your Executive Workflow Audit:\n\n• ⏱️ Duration: 30 minutes with Mohammed Oumama.\n• 🎯 Output: A concrete 7-day Done-For-You pilot plan customized for your business.\n• 🔒 Privacy: 100% governed by a signed Mutual NDA.\n\n👉 Select your slot right now in the #booking section on this page, or email hq@wixoi.com!';
+      return '🗓️ Book a Free Workflow Review:\n\n• Select your preferred slot directly in our #booking section below.\n• We review your bottleneck and assess how our workflows fit your needs.\n• Direct contact: hq@wixoi.com.';
     }
 
-    return '⚡ Wixoi designs, builds, and runs 100% Done-For-You AI workflows:\n\n• 📩 Email Triage & Customer Response\n• 📊 CRM Lead Scoring & Pipeline Organization\n• 🗓️ Meeting Summaries & Action Items\n• 📑 PDF & Invoice Data Extraction\n\n💬 Which of these areas would you like to automate first?';
+    return '⚡ Wixoi AI Workflows:\n\n• 📊 CRM Cleanup & Lead Ranking\n• 🗓️ Meeting Summaries & Action Plans\n• 📑 PDFs & Invoices to Clean Sheets\n• 📈 Automated Quotes & Weekly Reports\n\n🗓️ Schedule a free review at #booking or email hq@wixoi.com.';
   };
 
   const handleSendMessage = async (e?: React.FormEvent, directPrompt?: string) => {
@@ -734,7 +595,7 @@ export default function App() {
                 ),
               'Content-Type': 'application/json',
               'HTTP-Referer': 'https://wixoi.com',
-              'X-Title': 'Wixoi',
+              'X-Title': 'Wixoi AI',
             },
             body: JSON.stringify({
               model: m,
@@ -742,7 +603,7 @@ export default function App() {
                 {
                   role: 'system',
                   content:
-                    'You are Smart Assistant for Wixoi (wixoi.com). MANDATORY RULES:\n1. LANGUAGE: ALWAYS respond strictly in ENGLISH ONLY.\n2. NO ASTERISKS: NEVER output raw markdown asterisks (no **bold** or *stars*).\n3. USE EMOJIS: Use expressive emojis (⚡, 📩, 📊, 🗓️, 🚀, ✨, 💼).\n4. BULLETS & DASHES: When listing items or services, use clean bullet dashes (- or •) with a line break for every item.\n5. COLONS & LINE BREAKS: Use clear headers ending in a colon, followed by line breaks.\n6. CONCISE: 2 to 5 structured lines maximum.',
+                    'You are the official AI assistant for Wixoi AI (wixoi.com). You are an AI assistant, not a human.\n\nMANDATORY RULES:\n1. LANGUAGE: ALWAYS respond strictly in ENGLISH ONLY.\n2. NO ASTERISKS: NEVER output raw markdown asterisks (no **bold** or *stars*).\n3. USE EMOJIS: Use clean emojis (⚡, 📊, 🗓️, 📑, 📈, 💼).\n4. BULLETS & DASHES: When listing items or services, use clean bullet dashes (- or •) with a line break for every item.\n5. COLONS & LINE BREAKS: Use clear headers ending in a colon, followed by line breaks.\n6. CONCISE: 2 to 5 structured lines maximum.\n7. SERVICES SCOPE: Describe ONLY the 4 services we offer: CRM cleanup & lead ranking, Meeting summaries & action plans, PDFs & invoices to clean sheets, and Automated quotes & weekly reports. Do not offer email sorting or file search.\n8. FORBIDDEN WORDS: NEVER use the words "100%" or "instant".\n9. NO PROMISES: Never promise specific results, percentages, hours saved, prices, delivery dates, or guarantees. Never claim past clients or testimonials.\n10. UNANSWERED: For pricing, guarantees, or legal matters, state you cannot answer and suggest booking a review at #booking or emailing hq@wixoi.com.',
                 },
                 ...updatedMessages.map((msg) => ({ role: msg.role, content: msg.content })).slice(-8),
               ],
@@ -832,57 +693,7 @@ export default function App() {
   // Animated Visual Illustrations inside Service Cards (Replacing static text clutter)
 
   const renderAnimatedCardGraphic = (type: string) => {
-
     switch (type) {
-
-      case 'email':
-
-        return (
-
-          <div className="relative h-28 rounded-2xl wixoi-obsidian-box p-4 overflow-hidden flex flex-col justify-center gap-2.5">
-
-            {[
-
-              { title: 'New Client Quote Request', badge: 'Ready Draft', color: 'bg-[#2563EB]' },
-
-              { title: 'Supplier Invoice #904', badge: 'Sorted', color: 'bg-emerald-500/80' },
-
-            ].map((row, i) => (
-
-              <motion.div
-
-                key={row.title}
-
-                animate={{ x: [0, 4, 0] }}
-
-                transition={{ duration: 3.5, delay: i * 0.6, repeat: Infinity, ease: 'easeInOut' }}
-
-                className="flex items-center justify-between rounded-xl bg-white/[0.05] border border-white/10 px-3.5 py-2"
-
-              >
-
-                <div className="flex items-center gap-2.5">
-
-                  <span className="w-2 h-2 rounded-full bg-[#64CEFB]" />
-
-                  <span className="text-xs font-medium text-white/90">{row.title}</span>
-
-                </div>
-
-                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full text-white ${row.color}`}>
-
-                  {row.badge}
-
-                </span>
-
-              </motion.div>
-
-            ))}
-
-          </div>
-
-        );
-
       case 'crm':
 
         return (
@@ -893,7 +704,7 @@ export default function App() {
 
               <span className="font-semibold">Top Priority Call Today</span>
 
-              <span className="text-emerald-400 font-bold">98% Match</span>
+              <span className="text-emerald-400 font-bold">High Priority</span>
 
             </div>
 
@@ -1003,68 +814,23 @@ export default function App() {
 
         );
 
-      case 'knowledge':
-
-        return (
-
-          <div className="relative h-28 rounded-2xl wixoi-obsidian-box p-4 overflow-hidden flex flex-col justify-center gap-2">
-
-            <div className="rounded-xl bg-white/[0.05] border border-white/10 px-3 py-1.5 text-xs text-white/80 flex items-center gap-2">
-
-              <Search className="w-3.5 h-3.5 text-[#64CEFB]"/>
-
-              <span>&ldquo;What is our standard warranty?&rdquo;</span>
-
-            </div>
-
-            <motion.div
-
-              animate={{ opacity: [0.65, 1, 0.65] }}
-
-              transition={{ duration: 2.8, repeat: Infinity }}
-
-              className="rounded-xl bg-[#2563EB]/20 border border-[#64CEFB]/40 px-3 py-1.5 text-[11px] text-[#64CEFB] font-medium"
-
-            >
-
-              ✓ Cited Answer: Operations_Guide.pdf (Page 14)
-
-            </motion.div>
-
-          </div>
-
-        );
-
+      case 'reports':
       default:
-
         return (
-
           <div className="relative h-28 rounded-2xl wixoi-obsidian-box p-4 overflow-hidden flex items-center justify-between">
-
             <div>
-
               <span className="text-[11px] text-[#64CEFB] uppercase tracking-wider block mb-1">
-
-                Weekly Impact
-
+                Weekly Operations Report
               </span>
-
-              <span className="text-2xl font-bold text-white">+142 Hrs Saved</span>
-
+              <span className="text-base font-bold text-white">Summary Delivered</span>
+              <p className="text-[11px] text-white/60 mt-0.5">Automated quotes &amp; metrics logged</p>
             </div>
-
             <div className="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300">
-
-              <CheckCircle2 className="w-6 h-6"/>
-
+              <Award className="w-6 h-6"/>
             </div>
-
           </div>
-
         );
-
     }
-
   };
 
 
@@ -1089,7 +855,7 @@ export default function App() {
 
     const body = encodeURIComponent(
 
-      `Name: ${visitorName}\nEmail: ${visitorEmail}\nDate: October ${selectedDate}, 2026 at ${selectedSlot} (${timezone})\nDuration: ${duration}\nGoal: ${visitorGoal || 'Done-For-You AI Workflow Audit'}`
+      `Name: ${visitorName}\nEmail: ${visitorEmail}\nDate: October ${selectedDate}, 2026 at ${selectedSlot} (${timezone})\nDuration: ${duration}\nGoal: ${visitorGoal || 'AI Workflow Audit'}`
 
     );
 
@@ -1288,143 +1054,72 @@ export default function App() {
 
 
           {/* Hero Center Block */}
-
           <div className="my-auto pt-14 pb-10 max-w-3xl">
-
             <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.05] backdrop-blur-xl px-4 py-1.5 mb-7 shadow-[0_0_25px_rgba(59,130,246,0.25)]">
-
               <span className="flex h-2 w-2 relative">
-
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-
               </span>
-
               <span className="text-xs font-medium tracking-wide text-white/90">
-
-                100% Done-For-You AI Systems • Zero Technical Effort From Your Team
-
+                Reliable AI Workflows • Zero Technical Effort From Your Team
               </span>
-
             </div>
-
-
 
             <h1 className="font-serif italic font-normal text-6xl sm:text-7xl md:text-8xl xl:text-[6.4rem] leading-[0.94] tracking-tight text-white mb-6">
-
               <span className="block">Reclaim Your Team&apos;s</span>
-
               <span className="block mt-1">
-
                 <ShinyText text="Operating Week."/>
-
               </span>
-
             </h1>
 
-
-
             <p className="text-base sm:text-lg md:text-[19px] text-white/80 max-w-xl leading-relaxed mb-9 font-normal">
-
-              We build, connect, and run custom AI workflows for your company—sorting emails,
-
-              ranking CRM leads, summarizing meetings, and turning PDFs into clean spreadsheets—while
-
-              training your staff live to use them effortlessly.
-
+              We build small, reliable AI workflows for US businesses of 10 to 100 people, and train your team to run them: CRM leads ranked, meetings summarized, PDFs turned into clean data, and automated quotes &amp; weekly reports.
             </p>
 
-
-
             <div className="flex flex-wrap items-center gap-4">
-
               <a
-
                 href="#booking"
-
                 className="group inline-flex items-center gap-4 bg-white hover:bg-[#f0f7ff] text-[#020510] rounded-full pl-7 pr-2.5 py-2.5 text-sm sm:text-base font-bold transition-all duration-200 shadow-[0_0_45px_rgba(100,206,251,0.4)]"
-
               >
-
-                <span>Schedule Free 30-Min Audit</span>
-
+                <span>Schedule Free 30-Min Review</span>
                 <span className="w-10 h-10 rounded-full bg-[#2563EB] group-hover:bg-[#1d4ed8] text-white flex items-center justify-center transition-transform duration-200 group-hover:translate-x-0.5">
-
                   <ArrowRight className="w-4 h-4"/>
-
                 </span>
-
               </a>
 
-
-
               <button
-
                 type="button"
-
                 onClick={() => setChatOpen(true)}
-
                 className="inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-[#050C24]/70 hover:bg-white/10 backdrop-blur-xl px-6 py-4 text-sm sm:text-base font-semibold text-white transition-all"
-
               >
-
                 <MessageSquare className="w-4 h-4 text-[#64CEFB]"/>
-
-                <span>Talk to Smart Assistant</span>
-
+                <span>Talk to AI Assistant</span>
               </button>
-
             </div>
-
           </div>
 
-
-
           {/* 4 Simple Value Promises */}
-
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-4">
-
             {[
-
               {
-
-                label: 'DONE-FOR-YOU SETUP',
-
+                label: 'END-TO-END SETUP',
                 value: 'Zero Tech Work',
-
                 sub: 'We build & connect everything for you',
-
               },
-
               {
-
                 label: 'SPEED TO RESULT',
-
                 value: '7-Day Live Pilot',
-
                 sub: 'Tested on your real sample files',
-
               },
-
               {
-
                 label: 'RISK REVERSAL',
-
                 value: 'Verify First',
-
                 sub: 'See the output before you commit',
-
               },
-
               {
-
                 label: 'TEAM ENABLEMENT',
-
                 value: 'Live Training',
-
-                sub: '24/7 operation & monthly care',
-
+                sub: 'Hands-on training & monthly care',
               },
 
             ].map((stat) => (
@@ -1480,203 +1175,104 @@ export default function App() {
 
 
         {/* ===================================================================
-
-            1. THE GRAND SLAM OFFER (ALEX HORMOZI DONE-FOR-YOU POLICY)
-
+            1. OUR APPROACH & SERVICE COMMITMENT
         =================================================================== */}
-
         <section
-
           id="offer"
-
           className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20"
-
         >
-
           <div className="text-center max-w-3xl mx-auto mb-14">
-
             <p className="text-xs font-mono uppercase tracking-[0.22em] text-[#64CEFB] mb-3">
-
-              OUR DONE-FOR-YOU GUARANTEE
-
+              OUR SERVICE COMMITMENT
             </p>
-
             <h2 className="font-serif italic font-normal text-4xl sm:text-6xl text-white tracking-tight leading-[1.02] mb-4">
-
               We Handle Every Step. You Keep the Time Saved.
-
             </h2>
-
             <p className="text-sm sm:text-base text-white/75 leading-relaxed">
-
               Most agencies hand you complicated software and wish you luck. We do the opposite:
-
               we build the entire system for you, prove it on your files, and train your team until
-
               it runs like clockwork.
-
             </p>
-
           </div>
-
-
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
             {hormoziPillars.map((pillar, i) => (
-
               <motion.div
-
                 key={pillar.title}
-
                 initial={{ opacity: 0, y: 18 }}
-
                 whileInView={{ opacity: 1, y: 0 }}
-
                 viewport={{ once: true }}
-
                 transition={{ duration: 0.4, delay: i * 0.07 }}
-
                 className="wixoi-3d-card rounded-[28px] p-7 flex flex-col justify-between"
-
               >
-
                 <div>
-
                   <span className="inline-block rounded-full border border-[#64CEFB]/40 bg-[#2563EB]/20 px-3 py-1 text-[10px] font-mono font-bold text-[#64CEFB] mb-4">
-
                     {pillar.badge}
-
                   </span>
-
                   <h3 className="text-xl font-bold text-white mb-2.5">{pillar.title}</h3>
-
                   <p className="text-sm text-white/75 leading-relaxed">{pillar.description}</p>
-
                 </div>
-
               </motion.div>
-
             ))}
-
           </div>
-
         </section>
 
-
-
         {/* ===================================================================
-
             2. SIMPLE, MOVING VISUAL SERVICES (CLEAN & ELEGANT — NO CODE JARGON)
-
         =================================================================== */}
-
         <section
-
           id="services"
-
           className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28"
-
         >
-
           <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-14 gap-6">
-
             <div>
-
               <p className="text-xs font-mono uppercase tracking-[0.22em] text-[#64CEFB] mb-3">
-
                 WHAT WE AUTOMATE FOR YOU
-
               </p>
-
               <h2 className="font-serif italic font-normal text-4xl sm:text-6xl text-white tracking-tight leading-[1.02]">
-
-                Six Systems Built Around Your Daily Work
-
+                Four Core Systems Built Around Your Daily Work
               </h2>
-
             </div>
-
             <p className="text-sm md:text-base text-white/75 max-w-md leading-relaxed">
-
-              Everything appears directly inside Gmail, Google Docs, Google Sheets, and your CRM—no
-
-              new software for your staff to learn.
-
+              Results appear inside the tools you already use: extracted data in Google Sheets, summaries in Google Docs, ranked leads in a Google Sheet, and weekly executive reports.
             </p>
-
           </div>
 
-
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-
-            {visualServices.map((s, idx) => {
-
+          {/* Active 4 Services Grid (Only the services we offer) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+            {activeServices.map((s, idx) => {
               const Icon = s.icon;
-
               return (
-
                 <motion.div
-
                   key={s.id}
-
                   initial={{ opacity: 0, y: 20 }}
-
                   whileInView={{ opacity: 1, y: 0 }}
-
                   viewport={{ once: true }}
-
                   transition={{ duration: 0.45, delay: idx * 0.05 }}
-
-                  className="wixoi-3d-card rounded-[30px] p-7 flex flex-col justify-between group"
-
+                  className="wixoi-3d-card rounded-[30px] p-7 sm:p-8 flex flex-col justify-between group"
                 >
-
                   <div>
-
                     <div className="flex items-center justify-between gap-3 mb-5">
-
                       <div className="w-11 h-11 rounded-2xl border border-[#64CEFB]/40 bg-[#040B22] flex items-center justify-center text-[#64CEFB]">
-
                         <Icon className="w-5 h-5"/>
-
                       </div>
-
                       <span className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-medium text-emerald-300">
-
                         {s.outcome}
-
                       </span>
-
                     </div>
 
-
-
                     {/* Smooth Animated Visual Graphic */}
-
                     {renderAnimatedCardGraphic(s.visual)}
 
-
-
-                    <h3 className="text-xl font-bold text-white mt-5 mb-2.5 group-hover:text-[#64CEFB] transition-colors">
-
+                    <h3 className="text-xl sm:text-2xl font-bold text-white mt-5 mb-2.5 group-hover:text-[#64CEFB] transition-colors">
                       {s.title}
-
                     </h3>
-
                     <p className="text-sm text-white/75 leading-relaxed">{s.simpleCopy}</p>
-
                   </div>
-
                 </motion.div>
-
               );
-
             })}
-
           </div>
-
         </section>
 
 
@@ -1814,9 +1410,7 @@ export default function App() {
                   </motion.div>
 
                   <span className="text-[11px] font-mono uppercase tracking-widest text-[#64CEFB] block mb-1">
-
-                    2. DONE FOR YOU BY WIXOI
-
+                    2. BUILT FOR YOU BY WIXOI AI
                   </span>
 
                   <p className="text-base font-bold text-white">{currentFlow.wixoiAction}</p>
@@ -2155,10 +1749,10 @@ export default function App() {
               <span>DIRECT CAL.COM INTERACTIVE SCHEDULER</span>
             </div>
             <h2 className="font-serif italic font-normal text-4xl sm:text-6xl text-white leading-[1.02] mb-3">
-              Book Your Workflow Audit
+              Book Your Workflow Review
             </h2>
             <p className="text-sm sm:text-base text-white/70">
-              Select your date and time below to schedule directly with our executive team. Instant confirmation &amp; Google Meet invite sent automatically.
+              Select your date and time below to schedule directly with our executive team. Direct confirmation &amp; Google Meet invite sent automatically.
             </p>
           </div>
 
@@ -2175,11 +1769,11 @@ export default function App() {
                       Mohammed Oumama · Executive AI Architecture Team
                     </p>
                     <h3 className="text-2xl sm:text-3xl font-bold text-white">
-                      Done-For-You AI Workflow Audit
+                      AI Workflow Review
                     </h3>
                     <p className="text-xs sm:text-sm text-white/70 mt-2 leading-relaxed">
                       We review one repetitive bottleneck in your business and map out your 7-day
-                      Done-For-You pilot with concrete architecture, timeline, and ROI calculation.
+                      pilot with concrete architecture, timeline, and ROI calculation.
                     </p>
                   </div>
 
@@ -2213,7 +1807,7 @@ export default function App() {
 
                 <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/55">
                   <span>Direct Desk: hq@wixoi.com</span>
-                  <span className="text-emerald-400 font-medium">● Instant Cal.com Booking</span>
+                  <span className="text-emerald-400 font-medium">● Direct Cal.com Booking</span>
                 </div>
               </div>
 
@@ -2250,7 +1844,7 @@ export default function App() {
 
             <span className="text-white/30">•</span>
 
-            <span>© 2026 Wixoi</span>
+            <span>© 2026 Wixoi AI</span>
 
             <span className="hidden md:inline text-white/30">•</span>
 
@@ -2466,7 +2060,7 @@ export default function App() {
                   type="text"
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
-                  placeholder="Ask about workflows, audit, pricing..."
+                  placeholder="Ask about our workflows, review, services..."
                   className="flex-1 rounded-xl border border-white/15 bg-[#040B1E] px-3.5 py-2.5 text-xs text-white placeholder:text-white/35 focus:border-[#64CEFB] focus:outline-none transition-colors"
                 />
                 <button
@@ -2479,7 +2073,7 @@ export default function App() {
                 </button>
               </div>
               <div className="flex items-center justify-between text-[10px] text-white/40 px-1">
-                <span>⚡ Real AI • Instant answers</span>
+                <span>⚡ AI assistant • Verified workflows</span>
                 <span>English only</span>
               </div>
             </form>
@@ -2578,11 +2172,8 @@ export default function App() {
               <div className="space-y-3 text-xs sm:text-sm leading-relaxed">
 
                 <p>
-
-                  <strong>1. Done-For-You Scope:</strong> All pilot and production workflow builds
-
+                  <strong>1. Workflow Scope:</strong> All pilot and production workflow builds
                   are governed by a written Statement of Work and Mutual NDA.
-
                 </p>
 
                 <p>
