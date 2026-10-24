@@ -1,0 +1,26 @@
+{
+  "name": "Wixoi AI",
+  "short_name": "Wixoi AI",
+  "description": "Wixoi AI builds small, reliable AI workflows for US businesses: CRM leads ranked, meetings summarized, PDFs turned into clean data, and automated quotes & weekly reports.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020510",
+  "theme_color": "#020510",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
