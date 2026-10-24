@@ -1,7 +1,7 @@
 {
-  "name": "Wixoi AI",
-  "short_name": "Wixoi AI",
-  "description": "Wixoi AI builds small, reliable AI workflows for US businesses: CRM leads ranked, meetings summarized, PDFs turned into clean data, and automated quotes & weekly reports.",
+  "name": "Wixoi",
+  "short_name": "Wixoi",
+  "description": "Wixoi builds small, reliable AI workflows for US businesses: CRM leads ranked, meetings summarized, PDFs turned into clean data, and automated quotes & weekly reports.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#020510",

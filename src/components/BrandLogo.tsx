@@ -12,9 +12,9 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md' }) => {
 
   return (
     <div className="inline-flex items-center gap-3 group select-none">
-      {/* Exact Calligraphic Mark from Image 1 with subtle sapphire side-glow */}
+      {/* Official Custom Calligraphic Brush Mark */}
       <div
-        className={`relative ${iconBox} rounded-xl bg-[#050B1C] border border-white/15 flex items-center justify-center shadow-[0_0_24px_rgba(100,206,251,0.18)] group-hover:border-[#64CEFB]/60 transition-all duration-300 overflow-hidden`}
+        className={`relative ${iconBox} rounded-xl bg-[#040814] border border-white/15 flex items-center justify-center shadow-[0_0_24px_rgba(100,206,251,0.18)] group-hover:border-[#64CEFB]/60 transition-all duration-300 overflow-hidden`}
       >
         <div
           aria-hidden="true"
@@ -35,7 +35,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md' }) => {
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          {/* Top-Right Calligraphic Hook Stroke */}
+          {/* Top-Right Calligraphic Hook Stroke in sapphire #64CEFB */}
           <path
             d="M38.5 13.5 C40 19.5, 41 24.5, 43.2 25.5 C46 26.5, 50 22.5, 53 19.5"
             stroke="#64CEFB"
@@ -46,11 +46,11 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md' }) => {
         </svg>
       </div>
 
-      {/* Pure Brand Name: Wixoi AI */}
+      {/* Pure Brand Name: Wixoi (Zero letters after, AI removed 100%) */}
       <span
         className={`font-display font-bold tracking-tight text-white ${textSize} leading-none`}
       >
-        Wixoi AI
+        Wixoi
       </span>
     </div>
   );
