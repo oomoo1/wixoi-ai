@@ -1737,92 +1737,134 @@ export default function App() {
 
       ===================================================================== */}
 
-      <footer className="relative z-10 border-t border-white/10 bg-[#010308] py-6 text-xs text-white/50">
+            {/* =====================================================================
+          6. PROFESSIONAL 4-COLUMN FOOTER & COMPLIANCE
+      ===================================================================== */}
+      <footer className="border-t border-white/[0.08] bg-[#010308] pt-16 pb-12 text-white/70 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/[0.06]">
+            {/* Brand Info */}
+            <div className="md:col-span-1 space-y-4">
+              <BrandLogo size="md" />
+              <p className="text-sm text-white/60 leading-relaxed">
+                Quiet operational precision. We build four focused workflows
+                inside your existing CRM, Sheets, and Docs.
+              </p>
+              <div className="flex items-center gap-2 text-xs text-white/70 pt-2">
+                <ShieldCheck className="w-4 h-4 text-[#64CEFB] shrink-0" />
+                <span>Mutual NDA before client file access</span>
+              </div>
+            </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            {/* Workflows */}
+            <div>
+              <h4 className="font-mono text-xs text-[#64CEFB] mb-4 tracking-wider uppercase">
+                Workflows
+              </h4>
+              <ul className="space-y-2.5 text-sm text-white/60">
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">
+                    CRM Lead Ranking
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">
+                    Meeting Action Extractor
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">
+                    PDF &amp; Invoice Data to Sheets
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">
+                    Automated Quotes &amp; Weekly Reports
+                  </a>
+                </li>
+              </ul>
+            </div>
 
-          <div className="flex items-center gap-4">
+            {/* Company Navigation */}
+            <div>
+              <h4 className="font-mono text-xs text-[#64CEFB] mb-4 tracking-wider uppercase">
+                Company
+              </h4>
+              <ul className="space-y-2.5 text-sm text-white/60">
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">
+                    Services
+                  </a>
+                </li>
+                <li>
+                  <a href="#roi" className="hover:text-white transition-colors">
+                    Capacity Model
+                  </a>
+                </li>
+                <li>
+                  <a href="#booking" className="hover:text-white transition-colors">
+                    Book a Review
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="mailto:hq@wixoi.com"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                  >
+                    <span>hq@wixoi.com</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
 
-            <BrandLogo size="sm"/>
-
-            <span className="text-white/30">•</span>
-
-            <span>© 2026 Wixoi AI</span>
-
-            <span className="hidden md:inline text-white/30">•</span>
-
-            <span className="hidden md:inline text-white/60">24/7 Operations</span>
-
+            {/* Trust & Legal */}
+            <div>
+              <h4 className="font-mono text-xs text-[#64CEFB] mb-4 tracking-wider uppercase">
+                Compliance &amp; Legal
+              </h4>
+              <ul className="space-y-2.5 text-sm text-white/60">
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setLegalModal('security')}
+                    className="hover:text-white transition-colors text-left"
+                  >
+                    Security &amp; Architecture
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setLegalModal('privacy')}
+                    className="hover:text-white transition-colors text-left"
+                  >
+                    Privacy Policy (Zero Model Training)
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setLegalModal('terms')}
+                    className="hover:text-white transition-colors text-left"
+                  >
+                    Terms of Service
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
 
-
-
-          <div className="flex flex-wrap items-center gap-5">
-
-            <a
-
-              href="mailto:hq@wixoi.com"
-
-              className="text-white/70 hover:text-white transition-colors font-mono"
-
-            >
-
-              hq@wixoi.com
-
-            </a>
-
-            <button
-
-              type="button"
-
-              onClick={() => setLegalModal('privacy')}
-
-              className="hover:text-white transition-colors"
-
-            >
-
-              Privacy
-
-            </button>
-
-            <button
-
-              type="button"
-
-              onClick={() => setLegalModal('terms')}
-
-              className="hover:text-white transition-colors"
-
-            >
-
-              Terms
-
-            </button>
-
-            <button
-
-              type="button"
-
-              onClick={() => setLegalModal('security')}
-
-              className="hover:text-white transition-colors"
-
-            >
-
-              NDA &amp; Security
-
-            </button>
-
+          {/* Bottom Bar */}
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+            <p>© 2026 Wixoi. All rights reserved.</p>
+            <p className="text-white/40">
+              Engineered for US businesses of 10–100 employees.
+            </p>
           </div>
-
         </div>
-
       </footer>
 
-
-
       {/* =====================================================================
-
           7. SMART ASSISTANT WIDGET (ELEVATED 3D GLASSMORPHIC UI + TYPEWRITER STREAMING)
       ===================================================================== */}
       <div className="fixed bottom-5 right-5 z-50">
@@ -1831,22 +1873,18 @@ export default function App() {
             type="button"
             onClick={() => setChatOpen(true)}
             aria-label="Open Smart Assistant"
-            className="group relative flex items-center gap-3 rounded-full border border-[#64CEFB]/40 bg-[#040B22]/95 hover:bg-[#071338] text-white pl-3.5 pr-5 py-2.5 shadow-[0_12px_45px_rgba(37,99,235,0.6)] backdrop-blur-2xl transition-all duration-300 hover:scale-[1.03] hover:border-[#64CEFB]"
+            className="group relative flex items-center gap-2.5 rounded-full border border-[#64CEFB]/40 bg-gradient-to-r from-[#040B22]/95 to-[#0A1A4A]/95 hover:from-[#061238] hover:to-[#102A72] text-white px-4 py-3 shadow-[0_12px_45px_rgba(37,99,235,0.5)] backdrop-blur-2xl transition-all duration-300 hover:scale-[1.03] hover:border-[#64CEFB]"
           >
-            <div className="relative">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#2563EB] to-[#64CEFB] flex items-center justify-center text-white shadow-[0_0_15px_rgba(100,206,251,0.6)]">
-                <Bot className="w-4 h-4" />
-              </div>
-              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#040B22] animate-pulse" />
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#2563EB] to-[#64CEFB] flex items-center justify-center text-white shadow-[0_0_12px_rgba(100,206,251,0.5)] shrink-0">
+              <Bot className="w-4 h-4" />
             </div>
-            <div className="text-left">
-              <span className="block text-xs font-bold leading-none tracking-wide text-white flex items-center gap-1.5">
-                <span>Smart Assistant</span>
-                <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-[#2563EB]/30 text-[#64CEFB]">
-                  AI
-                </span>
+            <div className="text-left hidden sm:block">
+              <span className="block text-xs font-bold leading-none text-white">
+                Wixoi Assistant
               </span>
-              <span className="block text-[10px] text-emerald-400 mt-1 font-medium">● Online • 24/7</span>
+              <span className="block text-[10px] text-emerald-400 mt-1 font-mono">
+                ● Online · Scope answers
+              </span>
             </div>
           </button>
         ) : (
@@ -1862,9 +1900,9 @@ export default function App() {
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white tracking-wide flex items-center gap-1.5">
-                    <span>Smart Assistant</span>
+                    <span>Wixoi Assistant</span>
                     <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-md bg-[#2563EB]/25 text-[#64CEFB] border border-[#64CEFB]/30">
-                      Wixoi AI
+                      Operational
                     </span>
                   </h4>
                   <p className="text-[10px] text-white/50">Real AI • English Only • Zero Wait</p>
