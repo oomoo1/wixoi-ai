@@ -1,0 +1,27 @@
+# Wixoi Cloudflare Pages Cache & Crawler Headers
+
+# Googlebot and Googlebot-Image favicon crawling rules
+/favicon*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: all
+
+/icon*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: all
+
+/apple-touch-icon*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: all
+
+/site.webmanifest
+  Cache-Control: public, max-age=86400
+  Access-Control-Allow-Origin: *
+
+# Global security headers for HTML
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
