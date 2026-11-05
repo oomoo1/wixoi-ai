@@ -1737,43 +1737,126 @@ export default function App() {
 
       ===================================================================== */}
 
-      <footer className="relative z-10 border-t border-white/10 bg-[#010308] py-6 text-xs text-white/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <BrandLogo size="sm" />
-            <span className="text-white/30">•</span>
-            <span>© 2026 Wixoi AI</span>
-            <span className="hidden md:inline text-white/30">•</span>
-            <span className="hidden md:inline text-white/60">24/7 Operations</span>
+      <footer className="border-t border-white/[0.08] bg-[#010308] pt-16 pb-12 text-white/70 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/[0.06]">
+            {/* Brand Info */}
+            <div className="md:col-span-1 space-y-4">
+              <BrandLogo size="md" />
+              <p className="text-sm text-white/60 leading-relaxed">
+                Quiet operational precision. We build four focused workflows
+                inside your existing CRM, Sheets, and Docs.
+              </p>
+              <div className="flex items-center gap-2 text-xs text-white/70 pt-2">
+                <ShieldCheck className="w-4 h-4 text-[#64CEFB] shrink-0" />
+                <span>Mutual NDA before client file access</span>
+              </div>
+            </div>
+
+            {/* Workflows */}
+            <div>
+              <h4 className="font-mono text-xs text-[#64CEFB] mb-4 tracking-wider uppercase">
+                Workflows
+              </h4>
+              <ul className="space-y-2.5 text-sm text-white/60">
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">
+                    CRM Lead Ranking
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">
+                    Meeting Action Extractor
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">
+                    PDF &amp; Invoice Data to Sheets
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">
+                    Automated Quotes &amp; Weekly Reports
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Company Navigation */}
+            <div>
+              <h4 className="font-mono text-xs text-[#64CEFB] mb-4 tracking-wider uppercase">
+                Company
+              </h4>
+              <ul className="space-y-2.5 text-sm text-white/60">
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">
+                    Services
+                  </a>
+                </li>
+                <li>
+                  <a href="#roi" className="hover:text-white transition-colors">
+                    Capacity Model
+                  </a>
+                </li>
+                <li>
+                  <a href="#booking" className="hover:text-white transition-colors">
+                    Book a Review
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="mailto:hq@wixoi.com"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                  >
+                    <span>hq@wixoi.com</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Trust & Legal */}
+            <div>
+              <h4 className="font-mono text-xs text-[#64CEFB] mb-4 tracking-wider uppercase">
+                Compliance &amp; Legal
+              </h4>
+              <ul className="space-y-2.5 text-sm text-white/60">
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setLegalModal('security')}
+                    className="hover:text-white transition-colors text-left"
+                  >
+                    Security &amp; Architecture
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setLegalModal('privacy')}
+                    className="hover:text-white transition-colors text-left"
+                  >
+                    Privacy Policy (Zero Model Training)
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setLegalModal('terms')}
+                    className="hover:text-white transition-colors text-left"
+                  >
+                    Terms of Service
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-5">
-            <a
-              href="mailto:hq@wixoi.com"
-              className="text-white/70 hover:text-white transition-colors font-mono"
-            >
-              hq@wixoi.com
-            </a>
-            <button
-              type="button"
-              onClick={() => setLegalModal('privacy')}
-              className="hover:text-white transition-colors"
-            >
-              Privacy
-            </button>
-            <button
-              type="button"
-              onClick={() => setLegalModal('terms')}
-              className="hover:text-white transition-colors"
-            >
-              Terms
-            </button>
-            <button
-              type="button"
-              onClick={() => setLegalModal('security')}
-              className="hover:text-white transition-colors"
-            >
-              NDA &amp; Security
-            </button>
+
+          {/* Bottom Bar */}
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+            <p>© 2026 Wixoi. All rights reserved.</p>
+            <p className="text-white/40">
+              Engineered for US businesses of 10–100 employees.
+            </p>
           </div>
         </div>
       </footer>
