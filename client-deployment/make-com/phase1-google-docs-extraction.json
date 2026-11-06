@@ -1,0 +1,114 @@
+{
+  "name": "Wixoi - Phase 1: Google Docs Data Extraction (stealth/crouton-alpha)",
+  "description": "Monitors Wixoi Sandbox in Google Drive, reads Wixoi - Extraction Sandbox Google Doc, sends to OpenRouter stealth/crouton-alpha for zero-hallucination JSON extraction, and parses clean validated data.",
+  "flow": [
+    {
+      "id": 1,
+      "module": "google-drive:watchFilesInAFolder",
+      "version": 1,
+      "parameters": {
+        "folderId": "Wixoi Sandbox",
+        "watchType": "all"
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": { "x": 0, "y": 0 },
+        "restore": {},
+        "expect": []
+      }
+    },
+    {
+      "id": 2,
+      "module": "google-docs:getDocument",
+      "version": 1,
+      "parameters": {
+        "documentId": "Wixoi - Extraction Sandbox"
+      },
+      "mapper": {
+        "documentId": "{{1.id}}"
+      },
+      "metadata": {
+        "designer": { "x": 300, "y": 0 }
+      }
+    },
+    {
+      "id": 3,
+      "module": "http:ActionSendRequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true
+      },
+      "mapper": {
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{env.OPENROUTER_API_KEY}}"
+          },
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "HTTP-Referer",
+            "value": "https://wixoi.com"
+          },
+          {
+            "name": "X-Title",
+            "value": "Wixoi Infrastructure"
+          }
+        ],
+        "body": "{\n  \"model\": \"stealth/crouton-alpha\",\n  \"response_format\": { \"type\": \"json_object\" },\n  \"temperature\": 0.1,\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are the Wixoi Extraction Engine. Extract customer names, invoice details, line items, and amounts from the provided document text into strict JSON format.\\n\\nSTRICT EXTRACTION RULES:\\n1. NEVER invent or hallucinate missing data. If a field (such as PO number, tax, due date) is absent, output null strictly.\\n2. Output JSON matching this schema:\\n{\\n  \\\"customer_name\\\": string | null,\\n  \\\"vendor_name\\\": string | null,\\n  \\\"invoice_number\\\": string | null,\\n  \\\"po_number\\\": string | null,\\n  \\\"invoice_date\\\": string | null,\\n  \\\"due_date\\\": string | null,\\n  \\\"line_items\\\": [\\n    {\\n      \\\"description\\\": string,\\n      \\\"quantity\\\": number | null,\\n      \\\"unit_price\\\": number | null,\\n      \\\"amount\\\": number | null\\n    }\\n  ],\\n  \\\"subtotal\\\": number | null,\\n  \\\"tax\\\": number | null,\\n  \\\"total_amount\\\": number | null,\\n  \\\"currency\\\": string | null,\\n  \\\"verification_status\\\": \\\"VERIFIED\\\" | \\\"FLAGGED_FOR_HUMAN_REVIEW\\\",\\n  \\\"flags\\\": string[]\\n}\\n3. Validate math: if sum of line items != total_amount, set verification_status to 'FLAGGED_FOR_HUMAN_REVIEW' and add reason to flags.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{2.body.content}}\"\n    }\n  ]\n}",
+        "serializeUrl": false,
+        "shareCookies": false,
+        "parseResponse": true
+      },
+      "metadata": {
+        "designer": { "x": 600, "y": 0 }
+      }
+    },
+    {
+      "id": 4,
+      "module": "json:ParseJSON",
+      "version": 1,
+      "parameters": {
+        "type": ""
+      },
+      "mapper": {
+        "json": "{{3.data.choices[1].message.content}}"
+      },
+      "metadata": {
+        "designer": { "x": 900, "y": 0 }
+      }
+    },
+    {
+      "id": 5,
+      "module": "google-sheets:addRow",
+      "version": 2,
+      "parameters": {},
+      "mapper": {
+        "spreadsheetId": "Wixoi Clean Operations Data",
+        "sheetId": "Extracted Invoices",
+        "values": {
+          "Customer": "{{4.customer_name}}",
+          "Vendor": "{{4.vendor_name}}",
+          "Invoice #": "{{4.invoice_number}}",
+          "Date": "{{4.invoice_date}}",
+          "Total": "{{4.total_amount}}",
+          "Status": "{{4.verification_status}}",
+          "Flags": "{{join(4.flags, \", \")}}"
+        }
+      },
+      "metadata": {
+        "designer": { "x": 1200, "y": 0 }
+      }
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "wixoi_engine": "stealth/crouton-alpha",
+    "auth_provider": "openrouter.ai"
+  }
+}

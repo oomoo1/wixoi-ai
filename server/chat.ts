@@ -11,9 +11,7 @@ export interface ChatEnv {
 }
 
 const CANDIDATE_MODELS = [
-  'thinkingmachines/inkling-small:free',
-  'dots-studio/dots-3-note-preview:free',
-  'nvidia/nemotron-3-ultra-550b-a55b:free',
+  'stealth/crouton-alpha',
 ];
 
 export const SYSTEM_PROMPT = `You are the official operational assistant for Wixoi (wixoi.com). You are an AI assistant, not a person.

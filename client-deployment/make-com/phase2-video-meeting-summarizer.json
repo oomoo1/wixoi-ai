@@ -1,0 +1,126 @@
+{
+  "name": "Wixoi - Phase 2: Video Transcription & Meeting Summarization (stealth/crouton-alpha)",
+  "description": "Ingests meeting recording/video from Google Drive or local webhook, extracts audio transcript, processes with stealth/crouton-alpha to generate structured Wixoi Meeting Summary (Executive Summary, Key Decisions, Action Items with Owners & Deadlines), and creates formatted Google Doc.",
+  "flow": [
+    {
+      "id": 1,
+      "module": "google-drive:watchFilesInAFolder",
+      "version": 1,
+      "parameters": {
+        "folderId": "Wixoi Meetings Input",
+        "watchType": "all"
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": { "x": 0, "y": 0 }
+      }
+    },
+    {
+      "id": 2,
+      "module": "http:ActionSendRequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true
+      },
+      "mapper": {
+        "url": "https://api.openai.com/v1/audio/transcriptions",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{env.TRANSCRIPTION_KEY}}"
+          }
+        ],
+        "formData": [
+          {
+            "key": "file",
+            "value": "{{1.data}}",
+            "type": "file"
+          },
+          {
+            "key": "model",
+            "value": "whisper-1",
+            "type": "text"
+          }
+        ],
+        "parseResponse": true
+      },
+      "metadata": {
+        "designer": { "x": 300, "y": 0 }
+      }
+    },
+    {
+      "id": 3,
+      "module": "http:ActionSendRequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true
+      },
+      "mapper": {
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{env.OPENROUTER_API_KEY}}"
+          },
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "HTTP-Referer",
+            "value": "https://wixoi.com"
+          },
+          {
+            "name": "X-Title",
+            "value": "Wixoi Meeting Intelligence"
+          }
+        ],
+        "body": "{\n  \"model\": \"stealth/crouton-alpha\",\n  \"response_format\": { \"type\": \"json_object\" },\n  \"temperature\": 0.2,\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are the Wixoi Meeting Intelligence Engine. Parse the raw meeting transcript into a structured Wixoi Meeting Summary JSON.\\n\\nSTRICT REQUIREMENTS:\\n1. Executive Summary: 3-5 concise bullet points capturing core discussions.\\n2. Key Decisions: Locked decisions agreed upon during the meeting.\\n3. Action Items: List of tasks, assigned owner, deadline/due date, and status. If a task has no explicit deadline mentioned, flag it strictly as '[NEEDS DEADLINE REVIEW]'. Do not invent deadlines.\\n\\nOutput schema:\\n{\\n  \\\"meeting_title\\\": string,\\n  \\\"date\\\": string,\\n  \\\"attendees\\\": string[],\\n  \\\"executive_summary\\\": string[],\\n  \\\"key_decisions\\\": string[],\\n  \\\"action_items\\\": [\\n    {\\n      \\\"task\\\": string,\\n      \\\"owner\\\": string,\\n      \\\"due_date\\\": string,\\n      \\\"status\\\": \\\"PENDING\\\" | \\\"NEEDS_REVIEW\\\"\\n    }\\n  ]\\n}\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{2.data.text}}\"\n    }\n  ]\n}",
+        "serializeUrl": false,
+        "shareCookies": false,
+        "parseResponse": true
+      },
+      "metadata": {
+        "designer": { "x": 600, "y": 0 }
+      }
+    },
+    {
+      "id": 4,
+      "module": "json:ParseJSON",
+      "version": 1,
+      "parameters": {
+        "type": ""
+      },
+      "mapper": {
+        "json": "{{3.data.choices[1].message.content}}"
+      },
+      "metadata": {
+        "designer": { "x": 900, "y": 0 }
+      }
+    },
+    {
+      "id": 5,
+      "module": "google-docs:createADocument",
+      "version": 1,
+      "parameters": {
+        "folderId": "Wixoi Summaries"
+      },
+      "mapper": {
+        "title": "Wixoi Meeting Summary - {{4.meeting_title}} ({{4.date}})",
+        "content": "# {{4.meeting_title}}\nDate: {{4.date}}\nAttendees: {{join(4.attendees, \", \")}}\n\n## Executive Summary\n{{join(4.executive_summary, \"\\n• \")}}\n\n## Key Decisions\n{{join(4.key_decisions, \"\\n✓ \")}}\n\n## Action Items\n{{#each 4.action_items}}\n- [ ] {{task}} | Owner: {{owner}} | Due: {{due_date}} | Status: {{status}}\n{{/each}}"
+      },
+      "metadata": {
+        "designer": { "x": 1200, "y": 0 }
+      }
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "wixoi_engine": "stealth/crouton-alpha",
+    "auth_provider": "openrouter.ai"
+  }
+}
