@@ -1,0 +1,50 @@
+{
+  "dataStore": {
+    "name": "Wixoi - Pipeline Inventory DataStore",
+    "description": "Structured file classification and pipeline state tracking for Wixoi operational workflows",
+    "datastoresStructure": [
+      {
+        "name": "FileID",
+        "type": "text",
+        "required": true,
+        "description": "Google Drive or Workspace unique identifier"
+      },
+      {
+        "name": "FileName",
+        "type": "text",
+        "required": true,
+        "description": "Name of file or document"
+      },
+      {
+        "name": "FolderLocation",
+        "type": "text",
+        "required": false,
+        "description": "Parent folder (e.g. Wixoi Sandbox)"
+      },
+      {
+        "name": "WorkflowCategory",
+        "type": "text",
+        "required": true,
+        "description": "DOCUMENT_EXTRACTION | VIDEO_TRANSCRIPTION | CRM_CLEANUP | WEEKLY_REPORTS"
+      },
+      {
+        "name": "TargetModel",
+        "type": "text",
+        "required": true,
+        "description": "stealth/crouton-alpha | nvidia/nemotron-3.5-transcribe"
+      },
+      {
+        "name": "ExecutionStatus",
+        "type": "text",
+        "required": true,
+        "description": "READY | PROCESSING | VERIFIED | FLAGGED"
+      },
+      {
+        "name": "LastScannedTimestamp",
+        "type": "date",
+        "required": true,
+        "description": "Timestamp of discovery or last ingestion"
+      }
+    ]
+  }
+}

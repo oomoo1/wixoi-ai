@@ -1,0 +1,113 @@
+{
+  "name": "Wixoi Scenario 1 - Document Extraction (stealth/crouton-alpha)",
+  "description": "Production Make.com Scenario: Monitors 'Wixoi Sandbox' folder in Google Drive, retrieves 'Wixoi - Extraction Sandbox' document content, calls OpenRouter stealth/crouton-alpha with strict zero-hallucination prompt, parses validated JSON, and logs to Wixoi Data Store.",
+  "flow": [
+    {
+      "id": 1,
+      "module": "google-drive:watchFilesInAFolder",
+      "version": 1,
+      "parameters": {
+        "folderId": "Wixoi Sandbox",
+        "watchType": "all",
+        "maxResults": 10
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": { "x": 0, "y": 0 }
+      }
+    },
+    {
+      "id": 2,
+      "module": "google-docs:getDocument",
+      "version": 1,
+      "parameters": {
+        "documentId": "Wixoi - Extraction Sandbox"
+      },
+      "mapper": {
+        "documentId": "{{if(1.name = \"Wixoi - Extraction Sandbox\"; 1.id; \"Wixoi - Extraction Sandbox\")}}"
+      },
+      "metadata": {
+        "designer": { "x": 300, "y": 0 }
+      }
+    },
+    {
+      "id": 3,
+      "module": "http:ActionSendRequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true
+      },
+      "mapper": {
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{env.OPENROUTER_API_KEY}}"
+          },
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "HTTP-Referer",
+            "value": "https://wixoi.com"
+          },
+          {
+            "name": "X-Title",
+            "value": "Wixoi Document Extraction Engine"
+          }
+        ],
+        "body": "{\n  \"model\": \"stealth/crouton-alpha\",\n  \"response_format\": { \"type\": \"json_object\" },\n  \"temperature\": 0.1,\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are the Wixoi Extraction Engine. Extract customer names, invoice details, line items, and amounts from the provided document text into strict JSON format.\\n\\nSTRICT EXTRACTION RULES:\\n1. NEVER invent or hallucinate missing data. If a field is absent, output null strictly.\\n2. Output JSON strictly matching this schema:\\n{\\n  \\\"customer_name\\\": string | null,\\n  \\\"vendor_name\\\": string | null,\\n  \\\"invoice_number\\\": string | null,\\n  \\\"po_number\\\": string | null,\\n  \\\"invoice_date\\\": string | null,\\n  \\\"due_date\\\": string | null,\\n  \\\"line_items\\\": [\\n    {\\n      \\\"description\\\": string,\\n      \\\"quantity\\\": number | null,\\n      \\\"unit_price\\\": number | null,\\n      \\\"amount\\\": number | null\\n    }\\n  ],\\n  \\\"subtotal\\\": number | null,\\n  \\\"tax\\\": number | null,\\n  \\\"total_amount\\\": number | null,\\n  \\\"currency\\\": string | null,\\n  \\\"verification_status\\\": \\\"VERIFIED\\\" | \\\"FLAGGED_FOR_HUMAN_REVIEW\\\",\\n  \\\"flags\\\": string[]\\n}\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{2.body.content}}\"\n    }\n  ]\n}",
+        "serializeUrl": false,
+        "shareCookies": false,
+        "parseResponse": true
+      },
+      "metadata": {
+        "designer": { "x": 600, "y": 0 }
+      }
+    },
+    {
+      "id": 4,
+      "module": "json:ParseJSON",
+      "version": 1,
+      "parameters": {
+        "type": ""
+      },
+      "mapper": {
+        "json": "{{3.data.choices[1].message.content}}"
+      },
+      "metadata": {
+        "designer": { "x": 900, "y": 0 }
+      }
+    },
+    {
+      "id": 5,
+      "module": "datastore:addRecord",
+      "version": 1,
+      "parameters": {
+        "dataStoreId": "Wixoi - Pipeline Inventory DataStore",
+        "key": "{{4.invoice_number}}"
+      },
+      "mapper": {
+        "Customer": "{{4.customer_name}}",
+        "Vendor": "{{4.vendor_name}}",
+        "InvoiceNumber": "{{4.invoice_number}}",
+        "Total": "{{4.total_amount}}",
+        "Status": "{{4.verification_status}}",
+        "Timestamp": "{{now}}"
+      },
+      "metadata": {
+        "designer": { "x": 1200, "y": 0 }
+      }
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "scenario_type": "production",
+    "wixoi_model": "stealth/crouton-alpha",
+    "target_folder": "Wixoi Sandbox",
+    "target_doc": "Wixoi - Extraction Sandbox"
+  }
+}

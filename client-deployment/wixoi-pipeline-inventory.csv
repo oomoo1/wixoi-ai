@@ -1,0 +1,4 @@
+FileID,FileName,FolderLocation,WorkflowCategory,TargetModel,ExecutionStatus,Notes
+DOC-SANDBOX-01,Wixoi - Extraction Sandbox,Wixoi Sandbox,DOCUMENT_EXTRACTION,stealth/crouton-alpha,CONFIGURED_IN_SCENARIO_1,Primary sandbox document for zero-hallucination invoice and data extraction
+VID-UNTITLED-01,Untitled.mov,Google Drive (Root/Meetings),VIDEO_TRANSCRIPTION,"nvidia/nemotron-3.5-transcribe -> stealth/crouton-alpha",CONFIGURED_IN_SCENARIO_2,Meeting recording target for dialogue transcription and executive summary
+GAS-BRIDGE-01,google-apps-script-bridge.js,Google Workspace Script,WORKFLOW_BRIDGE,stealth/crouton-alpha,DEPLOYED_IN_REPO,Direct copy-paste bridge for Google Docs and Google Sheets

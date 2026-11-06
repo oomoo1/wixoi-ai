@@ -1,0 +1,130 @@
+{
+  "name": "Wixoi Scenario 2 - Video Transcription & Meeting Summary",
+  "description": "Production Make.com Scenario: Fetches 'Untitled.mov' from Google Drive, extracts audio and transcribes dialogue using nvidia/nemotron-3.5-transcribe, routes raw transcript to stealth/crouton-alpha for structured Executive Summary, Key Decisions, and Action Items, and generates a formatted Google Doc.",
+  "flow": [
+    {
+      "id": 1,
+      "module": "google-drive:downloadAFile",
+      "version": 1,
+      "parameters": {
+        "fileId": "Untitled.mov"
+      },
+      "mapper": {
+        "fileId": "{{searchFiles(\"name = 'Untitled.mov'\").id}}"
+      },
+      "metadata": {
+        "designer": { "x": 0, "y": 0 }
+      }
+    },
+    {
+      "id": 2,
+      "module": "http:ActionSendRequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true
+      },
+      "mapper": {
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{env.OPENROUTER_API_KEY}}"
+          },
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "HTTP-Referer",
+            "value": "https://wixoi.com"
+          },
+          {
+            "name": "X-Title",
+            "value": "Wixoi Audio Transcription Pipeline"
+          }
+        ],
+        "body": "{\n  \"model\": \"nvidia/nemotron-3.5-transcribe\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a high-accuracy Speech-To-Text transcription engine. Transcribe the audio verbatim into clean dialogue with speaker tags and timestamps.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"input_audio\",\n          \"input_audio\": {\n            \"data\": \"{{base64(1.data)}}\",\n            \"format\": \"mov\"\n          }\n        }\n      ]\n    }\n  ]\n}",
+        "serializeUrl": false,
+        "shareCookies": false,
+        "parseResponse": true
+      },
+      "metadata": {
+        "designer": { "x": 300, "y": 0 }
+      }
+    },
+    {
+      "id": 3,
+      "module": "http:ActionSendRequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true
+      },
+      "mapper": {
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{env.OPENROUTER_API_KEY}}"
+          },
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "HTTP-Referer",
+            "value": "https://wixoi.com"
+          },
+          {
+            "name": "X-Title",
+            "value": "Wixoi Meeting Intelligence Engine"
+          }
+        ],
+        "body": "{\n  \"model\": \"stealth/crouton-alpha\",\n  \"response_format\": { \"type\": \"json_object\" },\n  \"temperature\": 0.2,\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are the Wixoi Meeting Intelligence Engine. Parse the raw meeting transcript into a structured Wixoi Meeting Summary JSON.\\n\\nSTRICT REQUIREMENTS:\\n1. Executive Summary: Concise bullet points capturing core discussions.\\n2. Key Decisions: Locked decisions agreed upon during the meeting.\\n3. Action Items: List of tasks, assigned owner, deadline/due date, and status. If a task has no explicit deadline mentioned, flag it strictly as '[NEEDS DEADLINE REVIEW]'. Do not invent deadlines.\\n\\nOutput schema:\\n{\\n  \\\"meeting_title\\\": string,\\n  \\\"date\\\": string,\\n  \\\"attendees\\\": string[],\\n  \\\"executive_summary\\\": string[],\\n  \\\"key_decisions\\\": string[],\\n  \\\"action_items\\\": [\\n    {\\n      \\\"task\\\": string,\\n      \\\"owner\\\": string,\\n      \\\"due_date\\\": string,\\n      \\\"status\\\": \\\"PENDING\\\" | \\\"NEEDS_REVIEW\\\"\\n    }\\n  ]\\n}\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{2.data.choices[1].message.content}}\"\n    }\n  ]\n}",
+        "serializeUrl": false,
+        "shareCookies": false,
+        "parseResponse": true
+      },
+      "metadata": {
+        "designer": { "x": 600, "y": 0 }
+      }
+    },
+    {
+      "id": 4,
+      "module": "json:ParseJSON",
+      "version": 1,
+      "parameters": {
+        "type": ""
+      },
+      "mapper": {
+        "json": "{{3.data.choices[1].message.content}}"
+      },
+      "metadata": {
+        "designer": { "x": 900, "y": 0 }
+      }
+    },
+    {
+      "id": 5,
+      "module": "google-docs:createADocument",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "title": "Wixoi Meeting Summary - Untitled.mov ({{now}})",
+        "content": "# Wixoi Executive Meeting Summary\nTarget Source: Untitled.mov\nProcessed Date: {{now}}\n\n## Executive Summary\n{{join(4.executive_summary, \"\\n• \")}}\n\n## Key Decisions\n{{join(4.key_decisions, \"\\n✓ \")}}\n\n## Action Items Matrix\n{{#each 4.action_items}}\n- [ ] Task: {{task}} | Owner: {{owner}} | Due: {{due_date}} | Status: {{status}}\n{{/each}}"
+      },
+      "metadata": {
+        "designer": { "x": 1200, "y": 0 }
+      }
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "scenario_type": "production",
+    "transcription_model": "nvidia/nemotron-3.5-transcribe",
+    "summary_model": "stealth/crouton-alpha",
+    "target_video": "Untitled.mov"
+  }
+}
